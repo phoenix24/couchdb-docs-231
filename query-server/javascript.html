@@ -1,0 +1,710 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.2. JavaScript &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/query-server/javascript.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../index.html"/>
+        <link rel="up" title="3. Query Server" href="index.html"/>
+        <link rel="next" title="3.3. Erlang" href="erlang.html"/>
+        <link rel="prev" title="3.1. Query Server Protocol" href="protocol.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">1. API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. Query Server</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="protocol.html">3.1. Query Server Protocol</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. JavaScript</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design-functions-context">3.2.1. Design functions context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commonjs-modules">3.2.2. CommonJS Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="erlang.html">3.3. Erlang</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../http-api.html">API Quick Reference</a></li>
+<li><a href="../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">3. Query Server</a> &raquo;</li>
+        
+      <li>3.2. JavaScript</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/query-server/javascript.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="javascript">
+<span id="query-server-js"></span><h1>3.2. JavaScript<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">While every design function has access to all JavaScript objects, the table
+below describes appropriate usage cases. For example, you may use
+<a class="reference internal" href="#emit" title="emit"><code class="xref js js-func docutils literal"><span class="pre">emit()</span></code></a> in <a class="reference internal" href="../ddocs/ddocs.html#mapfun"><span class="std std-ref">Map Functions</span></a>, but <a class="reference internal" href="#getRow" title="getRow"><code class="xref js js-func docutils literal"><span class="pre">getRow()</span></code></a> is not permitted
+during <a class="reference internal" href="../ddocs/ddocs.html#mapfun"><span class="std std-ref">Map Functions</span></a>.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">JS Function</th>
+<th class="head">Reasonable to use in design doc functions</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#emit" title="emit"><code class="xref js js-func docutils literal"><span class="pre">emit()</span></code></a></td>
+<td><a class="reference internal" href="../ddocs/ddocs.html#mapfun"><span class="std std-ref">Map Functions</span></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#getRow" title="getRow"><code class="xref js js-func docutils literal"><span class="pre">getRow()</span></code></a></td>
+<td><a class="reference internal" href="../ddocs/ddocs.html#listfun"><span class="std std-ref">List Functions</span></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#JSON" title="JSON"><code class="xref js js-data docutils literal"><span class="pre">JSON</span></code></a></td>
+<td>any</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#isArray" title="isArray"><code class="xref js js-func docutils literal"><span class="pre">isArray()</span></code></a></td>
+<td>any</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#log" title="log"><code class="xref js js-func docutils literal"><span class="pre">log()</span></code></a></td>
+<td>any</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#provides" title="provides"><code class="xref js js-func docutils literal"><span class="pre">provides()</span></code></a></td>
+<td><a class="reference internal" href="../ddocs/ddocs.html#showfun"><span class="std std-ref">Show Functions</span></a>, <a class="reference internal" href="../ddocs/ddocs.html#listfun"><span class="std std-ref">List Functions</span></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#registerType" title="registerType"><code class="xref js js-func docutils literal"><span class="pre">registerType()</span></code></a></td>
+<td><a class="reference internal" href="../ddocs/ddocs.html#showfun"><span class="std std-ref">Show Functions</span></a>, <a class="reference internal" href="../ddocs/ddocs.html#listfun"><span class="std std-ref">List Functions</span></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#require" title="require"><code class="xref js js-func docutils literal"><span class="pre">require()</span></code></a></td>
+<td>any, except <a class="reference internal" href="../ddocs/ddocs.html#reducefun"><span class="std std-ref">Reduce and Rereduce Functions</span></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#send" title="send"><code class="xref js js-func docutils literal"><span class="pre">send()</span></code></a></td>
+<td><a class="reference internal" href="../ddocs/ddocs.html#listfun"><span class="std std-ref">List Functions</span></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#start" title="start"><code class="xref js js-func docutils literal"><span class="pre">start()</span></code></a></td>
+<td><a class="reference internal" href="../ddocs/ddocs.html#listfun"><span class="std std-ref">List Functions</span></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sum" title="sum"><code class="xref js js-func docutils literal"><span class="pre">sum()</span></code></a></td>
+<td>any</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#toJSON" title="toJSON"><code class="xref js js-func docutils literal"><span class="pre">toJSON()</span></code></a></td>
+<td>any</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="design-functions-context">
+<h2>3.2.1. Design functions context<a class="headerlink" href="#design-functions-context" title="Permalink to this headline">¶</a></h2>
+<p>Each design function executes in a special context of predefined objects,
+modules and functions:</p>
+<dl class="function">
+<dt id="emit">
+<code class="descname">emit</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#emit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emits a <cite>key</cite>-<cite>value</cite> pair for further processing by CouchDB after the map
+function is done.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> – The view key</li>
+<li><strong>value</strong> – The <cite>key</cite>’s associated value</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">){</span>
+    <span class="nx">emit</span><span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">_id</span><span class="p">,</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">_rev</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="getRow">
+<code class="descname">getRow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#getRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the next row from a related view result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">View result row</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">object</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">head</span><span class="p">,</span> <span class="nx">req</span><span class="p">){</span>
+    <span class="nx">send</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">);</span>
+    <span class="nx">row</span> <span class="o">=</span> <span class="nx">getRow</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">row</span><span class="p">){</span>
+        <span class="nx">send</span><span class="p">(</span><span class="nx">toJSON</span><span class="p">(</span><span class="nx">row</span><span class="p">));</span>
+        <span class="k">while</span><span class="p">(</span><span class="nx">row</span> <span class="o">=</span> <span class="nx">getRow</span><span class="p">()){</span>
+            <span class="nx">send</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span>
+            <span class="nx">send</span><span class="p">(</span><span class="nx">toJSON</span><span class="p">(</span><span class="nx">row</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="s1">&#39;]&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="JSON">
+<code class="descname">JSON</code><a class="headerlink" href="#JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://github.com/apache/couchdb/blob/master/share/server/json2.js">JSON2</a>
+object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="isArray">
+<code class="descname">isArray</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#isArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function to check if the provided value is an <cite>Array</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>obj</strong> – Any JavaScript value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">true</span></code> if <cite>obj</cite> is <cite>Array</cite>-typed, <code class="docutils literal"><span class="pre">false</span></code> otherwise</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log a message to the CouchDB log (at the <cite>INFO</cite> level).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>message</strong> – Message to be logged</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">){</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Procesing doc &#39;</span> <span class="o">+</span> <span class="nx">doc</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]);</span>
+    <span class="nx">emit</span><span class="p">(</span><span class="nx">doc</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">],</span> <span class="kc">null</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After the map function has run, the following line can be found in CouchDB
+logs (e.g. at <cite>/var/log/couchdb/couch.log</cite>):</p>
+<div class="highlight-text"><div class="highlight"><pre>[Sat, 03 Nov 2012 17:38:02 GMT] [info] [&lt;0.7543.0&gt;] OS Process #Port&lt;0.3289&gt; Log :: Processing doc 8d300b86622d67953d102165dbe99467
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="provides">
+<code class="descname">provides</code><span class="sig-paren">(</span><em>key</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#provides" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers callable handler for specified MIME key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> – MIME key previously defined by <a class="reference internal" href="#registerType" title="registerType"><code class="xref js js-func docutils literal"><span class="pre">registerType()</span></code></a></li>
+<li><strong>func</strong> – MIME type handler</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="registerType">
+<code class="descname">registerType</code><span class="sig-paren">(</span><em>key</em>, <em>*mimes</em><span class="sig-paren">)</span><a class="headerlink" href="#registerType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers list of MIME types by associated <cite>key</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> – MIME types</li>
+<li><strong>mimes</strong> – MIME types enumeration</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Predefined mappings (<cite>key</cite>-<cite>array</cite>):</p>
+<ul class="simple">
+<li><strong>all</strong>: <code class="docutils literal"><span class="pre">*/*</span></code></li>
+<li><strong>text</strong>: <code class="docutils literal"><span class="pre">text/plain;</span> <span class="pre">charset=utf-8</span></code>, <code class="docutils literal"><span class="pre">txt</span></code></li>
+<li><strong>html</strong>: <code class="docutils literal"><span class="pre">text/html;</span> <span class="pre">charset=utf-8</span></code></li>
+<li><strong>xhtml</strong>: <code class="docutils literal"><span class="pre">application/xhtml+xml</span></code>, <code class="docutils literal"><span class="pre">xhtml</span></code></li>
+<li><strong>xml</strong>: <code class="docutils literal"><span class="pre">application/xml</span></code>, <code class="docutils literal"><span class="pre">text/xml</span></code>, <code class="docutils literal"><span class="pre">application/x-xml</span></code></li>
+<li><strong>js</strong>: <code class="docutils literal"><span class="pre">text/javascript</span></code>, <code class="docutils literal"><span class="pre">application/javascript</span></code>,
+<code class="docutils literal"><span class="pre">application/x-javascript</span></code></li>
+<li><strong>css</strong>: <code class="docutils literal"><span class="pre">text/css</span></code></li>
+<li><strong>ics</strong>: <code class="docutils literal"><span class="pre">text/calendar</span></code></li>
+<li><strong>csv</strong>: <code class="docutils literal"><span class="pre">text/csv</span></code></li>
+<li><strong>rss</strong>: <code class="docutils literal"><span class="pre">application/rss+xml</span></code></li>
+<li><strong>atom</strong>: <code class="docutils literal"><span class="pre">application/atom+xml</span></code></li>
+<li><strong>yaml</strong>: <code class="docutils literal"><span class="pre">application/x-yaml</span></code>, <code class="docutils literal"><span class="pre">text/yaml</span></code></li>
+<li><strong>multipart_form</strong>: <code class="docutils literal"><span class="pre">multipart/form-data</span></code></li>
+<li><strong>url_encoded_form</strong>: <code class="docutils literal"><span class="pre">application/x-www-form-urlencoded</span></code></li>
+<li><strong>json</strong>: <code class="docutils literal"><span class="pre">application/json</span></code>, <code class="docutils literal"><span class="pre">text/x-json</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="require">
+<code class="descname">require</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#require" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads CommonJS module by a specified <cite>path</cite>. The path should not start with
+a slash.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> – A CommonJS module path started from design document root</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Exported statements</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>chunk</em><span class="sig-paren">)</span><a class="headerlink" href="#send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a single string <cite>chunk</cite> in response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>chunk</strong> – Text chunk</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">head</span><span class="p">,</span> <span class="nx">req</span><span class="p">){</span>
+    <span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello,&#39;</span><span class="p">);</span>
+    <span class="nx">send</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
+    <span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Couch&#39;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>init_resp</em><span class="sig-paren">)</span><a class="headerlink" href="#start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates chunked response. As an option, a custom
+<a class="reference internal" href="../json-structure.html#response-object"><span class="std std-ref">response</span></a> object may be sent at this point.
+For <cite>list</cite>-functions only!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">list functions may set the <cite>HTTP response code</cite> and <cite>headers</cite> by calling
+this function. This function must be called before <a class="reference internal" href="#send" title="send"><code class="xref js js-func docutils literal"><span class="pre">send()</span></code></a>,
+<a class="reference internal" href="#getRow" title="getRow"><code class="xref js js-func docutils literal"><span class="pre">getRow()</span></code></a> or a <cite>return</cite> statement; otherwise, the query server will
+implicitly call this function with the empty object (<code class="docutils literal"><span class="pre">{}</span></code>).</p>
+</div>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">head</span><span class="p">,</span> <span class="nx">req</span><span class="p">){</span>
+    <span class="nx">start</span><span class="p">({</span>
+        <span class="s2">&quot;code&quot;</span><span class="o">:</span> <span class="mi">302</span><span class="p">,</span>
+        <span class="s2">&quot;headers&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;Location&quot;</span><span class="o">:</span> <span class="s2">&quot;http://couchdb.apache.org&quot;</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="s2">&quot;Relax!&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="sum">
+<code class="descname">sum</code><span class="sig-paren">(</span><em>arr</em><span class="sig-paren">)</span><a class="headerlink" href="#sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum <cite>arr</cite>’s items.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> – Array of numbers</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">number</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="toJSON">
+<code class="descname">toJSON</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#toJSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes <cite>obj</cite> to JSON string. This is an alias for the <code class="docutils literal"><span class="pre">JSON.stringify</span></code>
+method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>obj</strong> – JSON-encodable object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">JSON string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="commonjs-modules">
+<span id="commonjs"></span><h2>3.2.2. CommonJS Modules<a class="headerlink" href="#commonjs-modules" title="Permalink to this headline">¶</a></h2>
+<p>Support for <a class="reference external" href="http://wiki.commonjs.org/wiki/Modules/1.1.1">CommonJS Modules</a>
+(introduced in CouchDB 0.11.0) allows you to create modular design functions
+without the need for duplication of functionality.</p>
+<p>Here’s a CommonJS module that checks user permissions:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">user_context</span><span class="p">(</span><span class="nx">userctx</span><span class="p">,</span> <span class="nx">secobj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">is_admin</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">userctx</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;_admin&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;is_admin&#39;</span><span class="o">:</span> <span class="nx">is_admin</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">user_context</span>
+</pre></div>
+</div>
+<p>Each module has access to additional global variables:</p>
+<ul class="simple">
+<li><strong>module</strong> (<cite>object</cite>): Contains information about the stored module<ul>
+<li><strong>id</strong> (<cite>string</cite>): The module id; a JSON path in ddoc context</li>
+<li><strong>current</strong> (<cite>code</cite>): Compiled module code object</li>
+<li><strong>parent</strong> (<cite>object</cite>): Parent frame</li>
+<li><strong>exports</strong> (<cite>object</cite>): Export statements</li>
+</ul>
+</li>
+<li><strong>exports</strong> (<cite>object</cite>): Shortcut to the <code class="docutils literal"><span class="pre">module.exports</span></code> object</li>
+</ul>
+<p>The CommonJS module can be added to a design document, like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;views&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;lib&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;security&quot;</span><span class="o">:</span> <span class="s2">&quot;function user_context(userctx, secobj) { ... }&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;validate_doc_update&quot;</span><span class="o">:</span> <span class="s2">&quot;function(newdoc, olddoc, userctx, secobj) {</span>
+<span class="s2">        user = require(&#39;views/lib/security&#39;).user(userctx, secobj);</span>
+<span class="s2">        return user.is_admin();</span>
+<span class="s2">    }&quot;</span>
+    <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;_design/test&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Modules paths are relative to the design document’s <code class="docutils literal"><span class="pre">views</span></code> object, but
+modules can only be loaded from the object referenced via <code class="docutils literal"><span class="pre">lib</span></code>. The
+<code class="docutils literal"><span class="pre">lib</span></code> structure can still be used for view functions as well, by simply
+storing view functions at e.g. <code class="docutils literal"><span class="pre">views.lib.map</span></code>, <code class="docutils literal"><span class="pre">views.lib.reduce</span></code>, etc.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="erlang.html" class="btn btn-neutral float-right" title="3.3. Erlang" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="protocol.html" class="btn btn-neutral" title="3.1. Query Server Protocol" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

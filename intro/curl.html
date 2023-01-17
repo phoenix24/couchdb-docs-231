@@ -1,0 +1,422 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.4. cURL: Your Command Line Friend &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/intro/curl.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../index.html"/>
+        <link rel="up" title="1. Introduction" href="index.html"/>
+        <link rel="next" title="1.5. Getting Started" href="tour.html"/>
+        <link rel="prev" title="1.3. Eventual Consistency" href="consistency.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Introduction</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1.1. Technical Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why.html">1.2. Why CouchDB?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consistency.html">1.3. Eventual Consistency</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.4. cURL: Your Command Line Friend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tour.html">1.5. Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">1.6. The Core API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">1.7. Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">1. API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query-server/index.html">3. Query Server</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../http-api.html">API Quick Reference</a></li>
+<li><a href="../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">1. Introduction</a> &raquo;</li>
+        
+      <li>1.4. cURL: Your Command Line Friend</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/intro/curl.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="curl-your-command-line-friend">
+<span id="intro-curl"></span><h1>1.4. cURL: Your Command Line Friend<a class="headerlink" href="#curl-your-command-line-friend" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal"><span class="pre">curl</span></code> utility is a command line tool available on Unix, Linux,
+Mac OS X and Windows and many other platforms. <code class="docutils literal"><span class="pre">curl</span></code> provides easy
+access to the HTTP protocol (among others) directly from the
+command-line and is therefore an ideal way of interacting with CouchDB
+over the HTTP REST API.</p>
+<p>For simple <code class="docutils literal"><span class="pre">GET</span></code> requests you can supply the URL of the request. For
+example, to get the database information:</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl http://127.0.0.1:5984
+</pre></div>
+</div>
+<p>This returns the database information (formatted in the output below for
+clarity):</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;couchdb&quot;</span><span class="p">:</span> <span class="s2">&quot;Welcome&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;The Apache Software Foundation&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For some URLs, especially those that include special characters such as
+ampersand, exclamation mark, or question mark, you should quote the URL you
+are specifying on the command line. For example:</p>
+<div class="last highlight-bash"><div class="highlight"><pre>shell&gt; curl <span class="s1">&#39;http://couchdb:5984/_uuids?count=5&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On Microsoft Windows, use double-quotes anywhere you see single-quotes in
+the following examples. Use doubled double-quotes (“”) anywhere you see
+single quotes. For example, if you see:</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl -X PUT <span class="s1">&#39;http:/127.0.0.1:5984/demo/doc&#39;</span> -d <span class="s1">&#39;{&quot;motto&quot;: &quot;I love gnomes&quot;}&#39;</span>
+</pre></div>
+</div>
+<p>you should replace it with:</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl -X PUT <span class="s2">&quot;http://127.0.0.1:5984/demo/doc&quot;</span> -d <span class="s2">&quot;{&quot;&quot;motto&quot;&quot;: &quot;&quot;I love gnomes&quot;&quot;}&quot;</span>
+</pre></div>
+</div>
+<p class="last">If you prefer, <code class="docutils literal"><span class="pre">^&quot;</span></code> and <code class="docutils literal"><span class="pre">\&quot;</span></code> may be used to escape the double-quote
+character in quoted strings instead.</p>
+</div>
+<p>You can explicitly set the HTTP command using the <code class="docutils literal"><span class="pre">-X</span></code> command line option.
+For example, when creating a database, you set the name of the database in the
+URL you send using a PUT request:</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl -X PUT http://127.0.0.1:5984/demo
+<span class="o">{</span><span class="s2">&quot;ok&quot;</span>:true<span class="o">}</span>
+</pre></div>
+</div>
+<p>But to obtain the database information you use a <code class="docutils literal"><span class="pre">GET</span></code> request (with
+the return information formatted for clarity):</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl -X GET http://127.0.0.1:5984/demo
+<span class="o">{</span>
+    <span class="s2">&quot;compact_running&quot;</span> : <span class="nb">false</span>,
+    <span class="s2">&quot;doc_count&quot;</span> : 0,
+    <span class="s2">&quot;db_name&quot;</span> : <span class="s2">&quot;demo&quot;</span>,
+    <span class="s2">&quot;purge_seq&quot;</span> : 0,
+    <span class="s2">&quot;committed_update_seq&quot;</span> : 0,
+    <span class="s2">&quot;doc_del_count&quot;</span> : 0,
+    <span class="s2">&quot;disk_format_version&quot;</span> : 5,
+    <span class="s2">&quot;update_seq&quot;</span> : 0,
+    <span class="s2">&quot;instance_start_time&quot;</span> : <span class="s2">&quot;0&quot;</span>,
+    <span class="s2">&quot;disk_size&quot;</span> : 79
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>For certain operations, you must specify the content type of request, which you
+do by specifying the <code class="docutils literal"><span class="pre">Content-Type</span></code> header using the <code class="docutils literal"><span class="pre">-H</span></code> command-line
+option:</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl -H <span class="s1">&#39;Content-Type: application/json&#39;</span> http://127.0.0.1:5984/_uuids
+</pre></div>
+</div>
+<p>You can also submit ‘payload’ data, that is, data in the body of the HTTP
+request using the <code class="docutils literal"><span class="pre">-d</span></code> option. This is useful if you need to submit JSON
+structures, for example document data, as part of the request. For example, to
+submit a simple document to the <code class="docutils literal"><span class="pre">demo</span></code> database:</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl -H <span class="s1">&#39;Content-Type: application/json&#39;</span> <span class="se">\</span>
+            -X POST http://127.0.0.1:5984/demo <span class="se">\</span>
+            -d <span class="s1">&#39;{&quot;company&quot;: &quot;Example, Inc.&quot;}&#39;</span>
+<span class="o">{</span><span class="s2">&quot;ok&quot;</span>:true,<span class="s2">&quot;id&quot;</span>:<span class="s2">&quot;8843faaf0b831d364278331bc3001bd8&quot;</span>,
+ <span class="s2">&quot;rev&quot;</span>:<span class="s2">&quot;1-33b9fbce46930280dab37d672bbc8bb9&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>In the above example, the argument after the <code class="docutils literal"><span class="pre">-d</span></code> option is the JSON of the
+document we want to submit.</p>
+<p>The document can be accessed by using the automatically generated document ID
+that was returned:</p>
+<div class="highlight-bash"><div class="highlight"><pre>shell&gt; curl -X GET http://127.0.0.1:5984/demo/8843faaf0b831d364278331bc3001bd8
+<span class="o">{</span><span class="s2">&quot;_id&quot;</span>:<span class="s2">&quot;8843faaf0b831d364278331bc3001bd8&quot;</span>,
+ <span class="s2">&quot;_rev&quot;</span>:<span class="s2">&quot;1-33b9fbce46930280dab37d672bbc8bb9&quot;</span>,
+ <span class="s2">&quot;company&quot;</span>:<span class="s2">&quot;Example, Inc.&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>The API samples in the <a class="reference internal" href="../api/basics.html#api-basics"><span class="std std-ref">API Basics</span></a> show the HTTP command, URL and any
+payload information that needs to be submitted (and the expected return value).
+All of these examples can be reproduced using <code class="docutils literal"><span class="pre">curl</span></code> with the command-line
+examples shown above.</p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tour.html" class="btn btn-neutral float-right" title="1.5. Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="consistency.html" class="btn btn-neutral" title="1.3. Eventual Consistency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

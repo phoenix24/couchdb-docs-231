@@ -1,0 +1,370 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.1. Fauxton Setup &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/fauxton/install.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../index.html"/>
+        <link rel="up" title="6. Fauxton" href="index.html"/>
+        <link rel="next" title="7. Experimental Features" href="../experimental.html"/>
+        <link rel="prev" title="6. Fauxton" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Fauxton</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.1. Fauxton Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fauxton-visual-guide">6.1.1. Fauxton Visual Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#development-server">6.1.2. Development Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#understanding-fauxton-code-layout">6.1.3. Understanding Fauxton Code layout</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#todo-items">6.1.3.1. ToDo items</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">1. API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query-server/index.html">3. Query Server</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../http-api.html">API Quick Reference</a></li>
+<li><a href="../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">6. Fauxton</a> &raquo;</li>
+        
+      <li>6.1. Fauxton Setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/fauxton/install.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fauxton-setup">
+<span id="fauxton-install"></span><h1>6.1. Fauxton Setup<a class="headerlink" href="#fauxton-setup" title="Permalink to this headline">¶</a></h1>
+<p>Fauxton is included with CouchDB 2.0, so make sure CouchDB is running, then go to:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">5984</span><span class="o">/</span><span class="n">_utils</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>You can also upgrade to the latest version of Fauxton by using npm:</p>
+<div class="highlight-default"><div class="highlight"><pre>$ npm install -g fauxton
+$ fauxton
+</pre></div>
+</div>
+<p>(Recent versions of <a class="reference external" href="http://nodejs.org/">node.js</a> and <a class="reference external" href="https://npmjs.org/doc/README.html">npm</a> are required.)</p>
+<div class="section" id="fauxton-visual-guide">
+<h2>6.1.1. Fauxton Visual Guide<a class="headerlink" href="#fauxton-visual-guide" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>You can find the Visual Guide here:</dt>
+<dd><a class="reference external" href="http://couchdb.apache.org/fauxton-visual-guide">http://couchdb.apache.org/fauxton-visual-guide</a></dd>
+</dl>
+</div>
+<div class="section" id="development-server">
+<h2>6.1.2. Development Server<a class="headerlink" href="#development-server" title="Permalink to this headline">¶</a></h2>
+<p>Recent versions of <a class="reference external" href="http://nodejs.org/">node.js</a> and <a class="reference external" href="https://npmjs.org/doc/README.html">npm</a> are required.</p>
+<p>Using the dev server is the easiest way to use Fauxton, specially when developing for it:</p>
+<div class="highlight-default"><div class="highlight"><pre>$ git clone https://github.com/apache/couchdb-fauxton.git
+$ npm install &amp;&amp; npm run dev
+</pre></div>
+</div>
+</div>
+<div class="section" id="understanding-fauxton-code-layout">
+<h2>6.1.3. Understanding Fauxton Code layout<a class="headerlink" href="#understanding-fauxton-code-layout" title="Permalink to this headline">¶</a></h2>
+<p>Each bit of functionality is its own separate module or addon.</p>
+<p>All core modules are stored under <cite>app/module</cite> and any addons that are optional
+are under <cite>app/addons</cite>.</p>
+<p>We use <a class="reference external" href="http://backbonejs.org/">backbone.js</a> and <a class="reference external" href="https://github.com/tbranyen/backbone.layoutmanager">Backbone.layoutmanager</a> quite heavily, so best to
+get an idea how they work. Its best at this point to read through a couple of
+the modules and addons to get an idea of how they work.</p>
+<p>Two good starting points are <cite>app/addon/config</cite> and <cite>app/modules/databases</cite>.</p>
+<p>Each module must have a <cite>base.js</cite> file, this is read and compile when Fauxton is
+deployed.</p>
+<p>The <cite>resource.js</cite> file is usually for your <code class="docutils literal"><span class="pre">Backbone.Models</span></code> and
+<code class="docutils literal"><span class="pre">Backbone.Collections</span></code>, <cite>view.js</cite> for your <code class="docutils literal"><span class="pre">Backbone.Views</span></code>.</p>
+<p>The <cite>routes.js</cite> is used to register a url path for your view along with what
+layout, data, breadcrumbs and api point is required for the view.</p>
+<div class="section" id="todo-items">
+<h3>6.1.3.1. ToDo items<a class="headerlink" href="#todo-items" title="Permalink to this headline">¶</a></h3>
+<p>Checkout <cite>JIRA</cite> or <a class="reference external" href="https://github.com/apache/couchdb-fauxton/issues">GitHub Issues</a>  for a list of items to do.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../experimental.html" class="btn btn-neutral float-right" title="7. Experimental Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="6. Fauxton" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

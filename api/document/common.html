@@ -1,0 +1,1618 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.4.1. /db/doc &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/api/document/common.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../../about.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../../index.html"/>
+        <link rel="up" title="1.4. Documents" href="index.html"/>
+        <link rel="next" title="1.4.2. /db/doc/attachment" href="attachments.html"/>
+        <link rel="prev" title="1.4. Documents" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../basics.html">1.1. API Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server/index.html">1.2. Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">1.3. Databases</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.4. Documents</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.4.1. <code class="docutils literal"><span class="pre">/db/doc</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#attachments">1.4.1.1. Attachments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-a-list-of-revisions">1.4.1.2. Getting a List of Revisions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#obtaining-an-extended-revision-history">1.4.1.3. Obtaining an Extended Revision History</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#obtaining-a-specific-revision">1.4.1.4. Obtaining a Specific Revision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updating-an-existing-document">1.4.1.5. Updating an Existing Document</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#copying-from-a-specific-revision">1.4.1.6. Copying from a Specific Revision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#copying-to-an-existing-document">1.4.1.7. Copying to an Existing Document</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="attachments.html">1.4.2. <code class="docutils literal"><span class="pre">/db/doc/attachment</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ddoc/index.html">1.5. Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local.html">1.6. Local (non-replicating) Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query-server/index.html">3. Query Server</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../../http-api.html">API Quick Reference</a></li>
+<li><a href="../../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">1. API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">1.4. Documents</a> &raquo;</li>
+        
+      <li>1.4.1. <code class="docutils literal"><span class="pre">/db/doc</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/api/document/common.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="db-doc">
+<span id="api-doc"></span><h1>1.4.1. <code class="docutils literal"><span class="pre">/db/doc</span></code><a class="headerlink" href="#db-doc" title="Permalink to this headline">¶</a></h1>
+<dl class="head">
+<dt id="head--db-docid">
+<code class="descname">HEAD </code><code class="descname">/{db}/{docid}</code><a class="headerlink" href="#head--db-docid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the HTTP Headers containing a minimal amount of information about
+the specified document. The method supports the same query arguments as the
+<a class="reference internal" href="#get--db-docid" title="GET /{db}/{docid}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/{db}/{docid}</span></code></a> method, but only the header information (including
+document size, and the revision as an ETag), is returned.</p>
+<p>The <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> header shows the current revision for the requested
+document, and the <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13">Content-Length</a> specifies the length of the
+data, if the document were requested in full.</p>
+<p>Adding any of the query arguments (see <a class="reference internal" href="#get--db-docid" title="GET /{db}/{docid}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/{db}/{docid}</span></code></a>), then the
+resulting HTTP Headers will correspond to what would be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>docid</strong> – Document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26">If-None-Match</a> – Double quoted document’s revision token</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13">Content-Length</a> – Document size</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Double quoted document’s revision token</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Document exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5">304 Not Modified</a> – Document wasn’t modified since specified revision</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – Read privilege required</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Document not found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">HEAD</span> <span class="nn">/db/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">660</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Tue, 13 Aug 2013 21:35:37 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;12-151bb8678d45aaa949ec3698ef1c7e78&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--db-docid">
+<code class="descname">GET </code><code class="descname">/{db}/{docid}</code><a class="headerlink" href="#get--db-docid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns document by the specified <code class="docutils literal"><span class="pre">docid</span></code> from the specified <code class="docutils literal"><span class="pre">db</span></code>.
+Unless you request a specific revision, the latest revision of the document
+will always be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>docid</strong> – Document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">multipart/related</em></li>
+<li><em class="mimetype">multipart/mixed</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26">If-None-Match</a> – Double quoted document’s revision token</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>attachments</strong> (<em>boolean</em>) – Includes attachments bodies in response.
+Default is <code class="docutils literal"><span class="pre">false</span></code></li>
+<li><strong>att_encoding_info</strong> (<em>boolean</em>) – Includes encoding information in
+attachment stubs if the particular attachment is compressed. Default is
+<code class="docutils literal"><span class="pre">false</span></code>.</li>
+<li><strong>atts_since</strong> (<em>array</em>) – Includes attachments only since specified
+revisions. Doesn’t includes attachments for specified revisions.
+<em>Optional</em></li>
+<li><strong>conflicts</strong> (<em>boolean</em>) – Includes information about conflicts in document.
+Default is <code class="docutils literal"><span class="pre">false</span></code></li>
+<li><strong>deleted_conflicts</strong> (<em>boolean</em>) – Includes information about deleted
+conflicted revisions. Default is <code class="docutils literal"><span class="pre">false</span></code></li>
+<li><strong>latest</strong> (<em>boolean</em>) – Forces retrieving latest “leaf” revision, no matter
+what <cite>rev</cite> was requested. Default is <code class="docutils literal"><span class="pre">false</span></code></li>
+<li><strong>local_seq</strong> (<em>boolean</em>) – Includes last update sequence for the
+document. Default is <code class="docutils literal"><span class="pre">false</span></code></li>
+<li><strong>meta</strong> (<em>boolean</em>) – Acts same as specifying all <cite>conflicts</cite>,
+<cite>deleted_conflicts</cite> and <cite>revs_info</cite> query parameters. Default is
+<code class="docutils literal"><span class="pre">false</span></code></li>
+<li><strong>open_revs</strong> (<em>array</em>) – Retrieves documents of specified leaf revisions.
+Additionally, it accepts value as <code class="docutils literal"><span class="pre">all</span></code> to return all leaf revisions.
+<em>Optional</em></li>
+<li><strong>rev</strong> (<em>string</em>) – Retrieves document of specified revision. <em>Optional</em></li>
+<li><strong>revs</strong> (<em>boolean</em>) – Includes list of all known document revisions.
+Default is <code class="docutils literal"><span class="pre">false</span></code></li>
+<li><strong>revs_info</strong> (<em>boolean</em>) – Includes detailed information for all known
+document revisions. Default is <code class="docutils literal"><span class="pre">false</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">multipart/related</em></li>
+<li><em class="mimetype">multipart/mixed</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Double quoted document’s revision token. Not available when
+retrieving conflicts-related information</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41">Transfer-Encoding</a> – <code class="docutils literal"><span class="pre">chunked</span></code>. Available if requested with query
+parameter <code class="docutils literal"><span class="pre">open_revs</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>_id</strong> (<em>string</em>) – Document ID</li>
+<li><strong>_rev</strong> (<em>string</em>) – Revision MVCC token</li>
+<li><strong>_deleted</strong> (<em>boolean</em>) – Deletion flag. Available if document was removed</li>
+<li><strong>_attachments</strong> (<em>object</em>) – Attachment’s stubs. Available if document has
+any attachments</li>
+<li><strong>_conflicts</strong> (<em>array</em>) – List of conflicted revisions. Available if
+requested with <code class="docutils literal"><span class="pre">conflicts=true</span></code> query parameter</li>
+<li><strong>_deleted_conflicts</strong> (<em>array</em>) – List of deleted conflicted revisions.
+Available if requested with <code class="docutils literal"><span class="pre">deleted_conflicts=true</span></code> query parameter</li>
+<li><strong>_local_seq</strong> (<em>string</em>) – Document’s update sequence in current database.
+Available if requested with <code class="docutils literal"><span class="pre">local_seq=true</span></code> query parameter</li>
+<li><strong>_revs_info</strong> (<em>array</em>) – List of objects with information about local
+revisions and their status. Available if requested with <code class="docutils literal"><span class="pre">open_revs</span></code>
+query parameter</li>
+<li><strong>_revisions</strong> (<em>object</em>) – List of local revision tokens without.
+Available if requested with <code class="docutils literal"><span class="pre">revs=true</span></code> query parameter</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5">304 Not Modified</a> – Document wasn’t modified since specified revision</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – The format of the request or revision was invalid</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – Read privilege required</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Document not found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">660</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Tue, 13 Aug 2013 21:35:37 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;1-917fa2381192822767f010b95b45325b&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;1-917fa2381192822767f010b95b45325b&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--db-docid">
+<code class="descname">PUT </code><code class="descname">/{db}/{docid}</code><a class="headerlink" href="#put--db-docid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6">PUT</a> method creates a new named document, or creates a new
+revision of the existing document. Unlike the <a class="reference internal" href="../database/common.html#post--db" title="POST /{db}"><code class="xref http http-post docutils literal"><span class="pre">POST</span> <span class="pre">/{db}</span></code></a>, you must
+specify the document ID in the request URL.</p>
+<p>When updating an existing document, the current document revision must be
+included in the document (i.e. the request body), as the <cite>rev</cite> query
+parameter, or in the <cite>If-Match</cite> request header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>docid</strong> – Document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">multipart/related</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24">If-Match</a> – Document’s revision. Alternative to <cite>rev</cite> query
+parameter or document key. <em>Optional</em></li>
+<li><strong>X-Couch-Full-Commit</strong> – Overrides server’s
+<a class="reference internal" href="../../config/couchdb.html#couchdb/delayed_commits" title="delayed_commits"><code class="xref config config-option docutils literal"><span class="pre">commit</span> <span class="pre">policy</span></code></a>. Possible values
+are: <code class="docutils literal"><span class="pre">false</span></code> and <code class="docutils literal"><span class="pre">true</span></code>. <em>Optional</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>rev</strong> (<em>string</em>) – Document’s revision if updating an existing document.
+Alternative to <cite>If-Match</cite> header or document key. <em>Optional</em></li>
+<li><strong>batch</strong> (<em>string</em>) – Stores document in <a class="reference internal" href="../database/common.html#api-doc-batch-writes"><span class="std std-ref">batch mode</span></a>. Possible values: <code class="docutils literal"><span class="pre">ok</span></code>. <em>Optional</em></li>
+<li><strong>new_edits</strong> (<em>boolean</em>) – Prevents insertion of a <a class="reference internal" href="../../replication/conflicts.html#replication-conflicts"><span class="std std-ref">conflicting
+document</span></a>. Possible values: <code class="docutils literal"><span class="pre">true</span></code> (default)
+and <code class="docutils literal"><span class="pre">false</span></code>. If <code class="docutils literal"><span class="pre">false</span></code>, a well-formed <code class="docutils literal"><span class="pre">_rev</span></code> must be included in
+the document. <code class="docutils literal"><span class="pre">new_edits=false</span></code> is used by the replicator to insert
+documents into the target database even if that leads to the creation
+of conflicts. <em>Optional</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+<li><em class="mimetype">multipart/related</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Quoted document’s new revision</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3">Location</a> – Document URI</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – Document ID</li>
+<li><strong>ok</strong> (<em>boolean</em>) – Operation status</li>
+<li><strong>rev</strong> (<em>string</em>) – Revision MVCC token</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a> – Document created and stored on disk</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.3">202 Accepted</a> – Document data accepted, but not yet stored on disk</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Invalid request body or parameters</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – Write privileges required</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Specified database or document ID doesn’t exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.10">409 Conflict</a> – Document with the specified ID already exists or specified
+revision is not latest for target document</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">PUT</span> <span class="nn">/recipes/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">196</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">85</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 20:31:39 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;1-917fa2381192822767f010b95b45325b&quot;</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">http://localhost:5984/recipes/SpaghettiWithMeatballs</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;1-917fa2381192822767f010b95b45325b&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="delete">
+<dt id="delete--db-docid">
+<code class="descname">DELETE </code><code class="descname">/{db}/{docid}</code><a class="headerlink" href="#delete--db-docid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marks the specified document as deleted by adding a field <code class="docutils literal"><span class="pre">_deleted</span></code> with
+the value <code class="docutils literal"><span class="pre">true</span></code>. Documents with this field will not be returned within
+requests anymore, but stay in the database. You must supply the current
+(latest) revision, either by using the <code class="docutils literal"><span class="pre">rev</span></code> parameter or by using the
+<a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24">If-Match</a> header to specify the revision.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">CouchDB doesn’t completely delete the specified document. Instead, it
+leaves a tombstone with very basic information about the document. The
+tombstone is required so that the delete action can be replicated
+across databases.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#api-doc-retrieving-deleted-documents"><span class="std std-ref">Retrieving Deleted Documents</span></a></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>docid</strong> – Document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24">If-Match</a> – Document’s revision. Alternative to <cite>rev</cite> query
+parameter</li>
+<li><strong>X-Couch-Full-Commit</strong> – Overrides server’s
+<a class="reference internal" href="../../config/couchdb.html#couchdb/delayed_commits" title="delayed_commits"><code class="xref config config-option docutils literal"><span class="pre">commit</span> <span class="pre">policy</span></code></a>. Possible values
+are: <code class="docutils literal"><span class="pre">false</span></code> and <code class="docutils literal"><span class="pre">true</span></code>. <em>Optional</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>rev</strong> (<em>string</em>) – Actual document’s revision</li>
+<li><strong>batch</strong> (<em>string</em>) – Stores document in <a class="reference internal" href="../database/common.html#api-doc-batch-writes"><span class="std std-ref">batch mode</span></a> Possible values: <code class="docutils literal"><span class="pre">ok</span></code>. <em>Optional</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Double quoted document’s new revision</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – Document ID</li>
+<li><strong>ok</strong> (<em>boolean</em>) – Operation status</li>
+<li><strong>rev</strong> (<em>string</em>) – Revision MVCC token</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Document successfully removed</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.3">202 Accepted</a> – Request was accepted, but changes are not yet stored on disk</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Invalid request body or parameters</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – Write privileges required</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Specified database or document ID doesn’t exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.10">409 Conflict</a> – Specified revision is not the latest for target document</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">DELETE</span> <span class="nn">/recipes/FishStew?rev=1-9c65296036141e575d32ba9c034dd3ee</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p>Alternatively, instead of <code class="docutils literal"><span class="pre">rev</span></code> query parameter you may use
+<a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24">If-Match</a> header:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">DELETE</span> <span class="nn">/recipes/FishStew</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">If-Match</span><span class="o">:</span> <span class="l">1-9c65296036141e575d32ba9c034dd3ee</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">71</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 12:23:13 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;2-056f5f44046ecafc08a2bc2b9c229e20&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;FishStew&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;2-056f5f44046ecafc08a2bc2b9c229e20&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<span class="target" id="api-doc-copy"></span><dl class="copy">
+<dt id="copy--db-docid">
+<code class="descname">COPY </code><code class="descname">/{db}/{docid}</code><a class="headerlink" href="#copy--db-docid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference external" href="http://tools.ietf.org/html/rfc2518#section-8.8">COPY</a> (which is non-standard HTTP) copies an existing
+document to a new or existing document. Copying a document is only possible
+within the same database.</p>
+<p>The source document is specified on the request line, with the
+<a class="reference external" href="http://tools.ietf.org/html/rfc2518#section-9.3">Destination</a> header of the request specifying the target
+document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>docid</strong> – Document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc2518#section-9.3">Destination</a> – Destination document. Must contain the target
+document ID, and optionally the target document revision, if copying to
+an existing document.  See <a class="reference internal" href="#copy-to-existing-document"><span class="std std-ref">Copying to an Existing Document</span></a>.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24">If-Match</a> – Source document’s revision. Alternative to <cite>rev</cite> query
+parameter</li>
+<li><strong>X-Couch-Full-Commit</strong> – Overrides server’s
+<a class="reference internal" href="../../config/couchdb.html#couchdb/delayed_commits" title="delayed_commits"><code class="xref config config-option docutils literal"><span class="pre">commit</span> <span class="pre">policy</span></code></a>. Possible values
+are: <code class="docutils literal"><span class="pre">false</span></code> and <code class="docutils literal"><span class="pre">true</span></code>. <em>Optional</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>rev</strong> (<em>string</em>) – Revision to copy from. <em>Optional</em></li>
+<li><strong>batch</strong> (<em>string</em>) – Stores document in <a class="reference internal" href="../database/common.html#api-doc-batch-writes"><span class="std std-ref">batch mode</span></a> Possible values: <code class="docutils literal"><span class="pre">ok</span></code>. <em>Optional</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Double quoted document’s new revision</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3">Location</a> – Document URI</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – Document document ID</li>
+<li><strong>ok</strong> (<em>boolean</em>) – Operation status</li>
+<li><strong>rev</strong> (<em>string</em>) – Revision MVCC token</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a> – Document successfully created</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.3">202 Accepted</a> – Request was accepted, but changes are not yet stored on disk</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Invalid request body or parameters</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – Read or write privileges required</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Specified database, document ID  or revision doesn’t exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.10">409 Conflict</a> – Document with the specified ID already exists or specified
+revision is not latest for target document</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">COPY</span> <span class="nn">/recipes/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Destination</span><span class="o">:</span> <span class="l">SpaghettiWithMeatballs_Italian</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">93</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 14:21:00 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;1-e86fdf912560c2321a5fcefc6264e6d9&quot;</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">http://localhost:5984/recipes/SpaghettiWithMeatballs_Italian</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs_Italian&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;1-e86fdf912560c2321a5fcefc6264e6d9&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="attachments">
+<span id="api-doc-attachments"></span><h2>1.4.1.1. Attachments<a class="headerlink" href="#attachments" title="Permalink to this headline">¶</a></h2>
+<p>If the document includes attachments, then the returned structure will contain
+a summary of the attachments associated with the document, but not the
+attachment data itself.</p>
+<p>The JSON for the returned document will include the <code class="docutils literal"><span class="pre">_attachments</span></code> field,
+with one or more attachment definitions.</p>
+<p>The <code class="docutils literal"><span class="pre">_attachments</span></code> object keys are attachments names while values are
+information objects with next structure:</p>
+<ul>
+<li><p class="first"><strong>content_type</strong> (<em>string</em>): Attachment MIME type</p>
+</li>
+<li><p class="first"><strong>data</strong> (<em>string</em>): Base64-encoded content. Available if attachment content
+is requested by using the following query parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">attachments=true</span></code> when querying a document</li>
+<li><code class="docutils literal"><span class="pre">attachments=true&amp;include_docs=true</span></code> when querying a
+<a class="reference internal" href="../database/changes.html#api-db-changes"><span class="std std-ref">changes feed</span></a> or a <a class="reference internal" href="../ddoc/views.html#api-ddoc-view"><span class="std std-ref">view</span></a></li>
+<li><code class="docutils literal"><span class="pre">atts_since</span></code>.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>digest</strong> (<em>string</em>): Content hash digest.
+It starts with prefix which announce hash type (<code class="docutils literal"><span class="pre">md5-</span></code>) and continues with
+Base64-encoded hash digest</p>
+</li>
+<li><p class="first"><strong>encoded_length</strong> (<em>number</em>): Compressed attachment size in bytes.
+Available if <code class="docutils literal"><span class="pre">content_type</span></code> is in <a class="reference internal" href="../../config/misc.html#attachments/compressible_types" title="compressible_types"><code class="xref config config-option docutils literal"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">compressible</span>
+<span class="pre">types</span></code></a> when the attachment was added and the
+following query parameters are specified:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">att_encoding_info=true</span></code> when querying a document</li>
+<li><code class="docutils literal"><span class="pre">att_encoding_info=true&amp;include_docs=true</span></code> when querying a
+<a class="reference internal" href="../database/changes.html#api-db-changes"><span class="std std-ref">changes feed</span></a> or a <a class="reference internal" href="../ddoc/views.html#api-ddoc-view"><span class="std std-ref">view</span></a></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>encoding</strong> (<em>string</em>): Compression codec. Available if <code class="docutils literal"><span class="pre">content_type</span></code> is
+in <a class="reference internal" href="../../config/misc.html#attachments/compressible_types" title="compressible_types"><code class="xref config config-option docutils literal"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">compressible</span> <span class="pre">types</span></code></a> when the attachment was added and the
+following query parameters are specified:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">att_encoding_info=true</span></code> when querying a document</li>
+<li><code class="docutils literal"><span class="pre">att_encoding_info=true&amp;include_docs=true</span></code> when querying a
+<a class="reference internal" href="../database/changes.html#api-db-changes"><span class="std std-ref">changes feed</span></a> or a <a class="reference internal" href="../ddoc/views.html#api-ddoc-view"><span class="std std-ref">view</span></a></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>length</strong> (<em>number</em>): Real attachment size in bytes. Not available if
+attachment content requested</p>
+</li>
+<li><p class="first"><strong>revpos</strong> (<em>number</em>): Revision <em>number</em> when attachment was added</p>
+</li>
+<li><p class="first"><strong>stub</strong> (<em>boolean</em>): Has <code class="docutils literal"><span class="pre">true</span></code> value if object contains stub info and no
+content. Otherwise omitted in response</p>
+</li>
+</ul>
+<div class="section" id="basic-attachments-info">
+<h3>1.4.1.1.1. Basic Attachments Info<a class="headerlink" href="#basic-attachments-info" title="Permalink to this headline">¶</a></h3>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">660</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Tue, 13 Aug 2013 21:35:37 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_attachments&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;grandma_recipe.txt&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-Ids41vtv725jyrN7iUvMcQ==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1872</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;my_recipe.txt&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-198BPPNiT5fqlLxoYYbjBA==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">85</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;photo.jpg&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-7Pv4HW2822WY1r/3WDbPug==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">165504</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-attachments-content">
+<span id="api-doc-retrieving-deleted-documents"></span><h3>1.4.1.1.2. Retrieving Attachments Content<a class="headerlink" href="#retrieving-attachments-content" title="Permalink to this headline">¶</a></h3>
+<p>It’s possible to retrieve document with all attached files content by using
+<code class="docutils literal"><span class="pre">attachments=true</span></code> query parameter:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/db/pixel?attachments=true</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">553</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 11:32:40 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;4-f1bcae4bf7bbb92310079e632abfe3f4&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_attachments&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;pixel.gif&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;image/gif&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-2JdGiI2i2VELZKnwMers1Q==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pixel.png&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAAXNSR0IArs4c6QAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAABYktHRACIBR1IAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QgOCx8VHgmcNwAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-Dgf5zxgGuchWrve73evvGQ==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">3</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;pixel&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;4-f1bcae4bf7bbb92310079e632abfe3f4&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Or retrieve attached files content since specific revision using <code class="docutils literal"><span class="pre">atts_since</span></code>
+query parameter:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/SpaghettiWithMeatballs?atts_since=[%224-874985bc28906155ba0e2e0538f67b05%22]</span>  <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">760</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Tue, 13 Aug 2013 21:35:37 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_attachments&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;grandma_recipe.txt&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-Ids41vtv725jyrN7iUvMcQ==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1872</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;my_recipe.txt&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;MS4gQ29vayBzcGFnaGV0dGkKMi4gQ29vayBtZWV0YmFsbHMKMy4gTWl4IHRoZW0KNC4gQWRkIHRvbWF0byBzYXVjZQo1LiAuLi4KNi4gUFJPRklUIQ==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-198BPPNiT5fqlLxoYYbjBA==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">5</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;photo.jpg&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-7Pv4HW2822WY1r/3WDbPug==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">165504</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="efficient-multiple-attachments-retrieving">
+<h4>1.4.1.1.2.1. Efficient Multiple Attachments Retrieving<a class="headerlink" href="#efficient-multiple-attachments-retrieving" title="Permalink to this headline">¶</a></h4>
+<p>As noted above, retrieving document with <code class="docutils literal"><span class="pre">attachments=true</span></code> returns a
+large JSON object with all attachments included.  When your document and
+files are smaller it’s ok, but if you have attached something bigger like media
+files (audio/video), parsing such response might be very expensive.</p>
+<p>To solve this problem, CouchDB allows to get documents in
+<em class="mimetype">multipart/related</em> format:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/secret?attachments=true</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">multipart/related</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">538</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">multipart/related; boundary=&quot;e89b3e29388aef23453450d10e5aaed0&quot;</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 28 Sep 2013 08:08:22 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;2-c1c6c44c4bc3c9344b037c8690468605&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang OTP)</span>
+
+--e89b3e29388aef23453450d10e5aaed0
+Content-Type: application/json
+
+{&quot;_id&quot;:&quot;secret&quot;,&quot;_rev&quot;:&quot;2-c1c6c44c4bc3c9344b037c8690468605&quot;,&quot;_attachments&quot;:{&quot;recipe.txt&quot;:{&quot;content_type&quot;:&quot;text/plain&quot;,&quot;revpos&quot;:2,&quot;digest&quot;:&quot;md5-HV9aXJdEnu0xnMQYTKgOFA==&quot;,&quot;length&quot;:86,&quot;follows&quot;:true}}}
+--e89b3e29388aef23453450d10e5aaed0
+Content-Disposition: attachment; filename=&quot;recipe.txt&quot;
+Content-Type: text/plain
+Content-Length: 86
+
+1. Take R
+2. Take E
+3. Mix with L
+4. Add some A
+5. Serve with X
+
+--e89b3e29388aef23453450d10e5aaed0--
+</pre></div>
+</div>
+<p>In this response the document contains only attachments stub information and
+quite short while all attachments goes as separate entities which reduces
+memory footprint and processing overhead (you’d noticed, that attachment
+content goes as raw data, not in base64 encoding, right?).</p>
+</div>
+</div>
+<div class="section" id="retrieving-attachments-encoding-info">
+<h3>1.4.1.1.3. Retrieving Attachments Encoding Info<a class="headerlink" href="#retrieving-attachments-encoding-info" title="Permalink to this headline">¶</a></h3>
+<p>By using <code class="docutils literal"><span class="pre">att_encoding_info=true</span></code> query parameter you may retrieve
+information about compressed attachments size and used codec.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/SpaghettiWithMeatballs?att_encoding_info=true</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">736</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Tue, 13 Aug 2013 21:35:37 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_attachments&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;grandma_recipe.txt&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-Ids41vtv725jyrN7iUvMcQ==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;encoded_length&quot;</span><span class="p">:</span> <span class="mi">693</span><span class="p">,</span>
+            <span class="nt">&quot;encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1872</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;my_recipe.txt&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-198BPPNiT5fqlLxoYYbjBA==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;encoded_length&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="nt">&quot;encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">85</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;photo.jpg&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;digest&quot;</span><span class="p">:</span> <span class="s2">&quot;md5-7Pv4HW2822WY1r/3WDbPug==&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">165504</span><span class="p">,</span>
+            <span class="nt">&quot;revpos&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&quot;stub&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-multiple-attachments">
+<h3>1.4.1.1.4. Creating Multiple Attachments<a class="headerlink" href="#creating-multiple-attachments" title="Permalink to this headline">¶</a></h3>
+<p>To create a document with multiple attachments with single request you need
+just inline base64 encoded attachments data into the document body:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;_id&quot;</span><span class="o">:</span><span class="s2">&quot;multiple_attachments&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;_attachments&quot;</span><span class="o">:</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;foo.txt&quot;</span><span class="o">:</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;content_type&quot;</span><span class="o">:</span><span class="s2">&quot;text\/plain&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;data&quot;</span><span class="o">:</span> <span class="s2">&quot;VGhpcyBpcyBhIGJhc2U2NCBlbmNvZGVkIHRleHQ=&quot;</span>
+    <span class="p">},</span>
+
+   <span class="s2">&quot;bar.txt&quot;</span><span class="o">:</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;content_type&quot;</span><span class="o">:</span><span class="s2">&quot;text\/plain&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;data&quot;</span><span class="o">:</span> <span class="s2">&quot;VGhpcyBpcyBhIGJhc2U2NCBlbmNvZGVkIHRleHQ=&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, you can upload a document with attachments more efficiently in
+<em class="mimetype">multipart/related</em> format. This avoids having to Base64-encode
+the attachments, saving CPU and bandwidth. To do this, set the
+<a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> header of the <a class="reference internal" href="#put--db-docid" title="PUT /{db}/{docid}"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/{db}/{docid}</span></code></a> request to
+<em class="mimetype">multipart/related</em>.</p>
+<p>The first MIME body is the document itself, which should have its own
+<a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> of <em class="mimetype">application/json&quot;</em>. It also should
+include  an <code class="docutils literal"><span class="pre">_attachments</span></code> metadata object in which each attachment object
+has a key <code class="docutils literal"><span class="pre">follows</span></code> with value <code class="docutils literal"><span class="pre">true</span></code>.</p>
+<p>The subsequent MIME bodies are the attachments.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">PUT</span> <span class="nn">/temp/somedoc</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">372</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">multipart/related;boundary=&quot;abc123&quot;</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+<span class="na">User-Agent</span><span class="o">:</span> <span class="l">HTTPie/0.6.0</span>
+
+--abc123
+Content-Type: application/json
+
+{
+    &quot;body&quot;: &quot;This is a body.&quot;,
+    &quot;_attachments&quot;: {
+        &quot;foo.txt&quot;: {
+            &quot;follows&quot;: true,
+            &quot;content_type&quot;: &quot;text/plain&quot;,
+            &quot;length&quot;: 21
+        },
+        &quot;bar.txt&quot;: {
+            &quot;follows&quot;: true,
+            &quot;content_type&quot;: &quot;text/plain&quot;,
+            &quot;length&quot;: 20
+        }
+    }
+}
+
+--abc123
+
+this is 21 chars long
+--abc123
+
+this is 20 chars lon
+--abc123--
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">72</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 28 Sep 2013 09:13:24 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;1-5575e26acdeb1df561bb5b70b26ba151&quot;</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">http://localhost:5984/temp/somedoc</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;somedoc&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;1-5575e26acdeb1df561bb5b70b26ba151&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="getting-a-list-of-revisions">
+<h2>1.4.1.2. Getting a List of Revisions<a class="headerlink" href="#getting-a-list-of-revisions" title="Permalink to this headline">¶</a></h2>
+<p>You can obtain a list of the revisions for a given document by adding
+the <code class="docutils literal"><span class="pre">revs=true</span></code> parameter to the request URL:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/SpaghettiWithMeatballs?revs=true</span>  <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">584</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 11:38:26 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;8-6f5ad8db0f34af24a6e0984cd1a6cfb9&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_revisions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;6f5ad8db0f34af24a6e0984cd1a6cfb9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;77fba3a059497f51ec99b9b478b569d2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;136813b440a00a24834f5cb1ddf5b1f1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fd96acb3256302bf0dd2f32713161f2a&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;874985bc28906155ba0e2e0538f67b05&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0de77a37463bf391d14283e626831f2e&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;d795d1b924777732fdea76538c558b62&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;917fa2381192822767f010b95b45325b&quot;</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;start&quot;</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The returned JSON structure includes the original document, including a
+<code class="docutils literal"><span class="pre">_revisions</span></code> structure that includes the revision information in next form:</p>
+<ul class="simple">
+<li><strong>ids</strong> (<em>array</em>): Array of valid revision IDs, in reverse order
+(latest first)</li>
+<li><strong>start</strong> (<em>number</em>): Prefix number for the latest revision</li>
+</ul>
+</div>
+<div class="section" id="obtaining-an-extended-revision-history">
+<h2>1.4.1.3. Obtaining an Extended Revision History<a class="headerlink" href="#obtaining-an-extended-revision-history" title="Permalink to this headline">¶</a></h2>
+<p>You can get additional information about the revisions for a given document by
+supplying the <code class="docutils literal"><span class="pre">revs_info</span></code> argument to the query:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/SpaghettiWithMeatballs?revs_info=true</span>  <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">802</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 11:40:55 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;8-6f5ad8db0f34af24a6e0984cd1a6cfb9&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_revs_info&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;8-6f5ad8db0f34af24a6e0984cd1a6cfb9&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;available&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;7-77fba3a059497f51ec99b9b478b569d2&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;deleted&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;6-136813b440a00a24834f5cb1ddf5b1f1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;available&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;5-fd96acb3256302bf0dd2f32713161f2a&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;missing&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;4-874985bc28906155ba0e2e0538f67b05&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;missing&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;3-0de77a37463bf391d14283e626831f2e&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;missing&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;2-d795d1b924777732fdea76538c558b62&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;missing&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;1-917fa2381192822767f010b95b45325b&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;missing&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The returned document contains <code class="docutils literal"><span class="pre">_revs_info</span></code> field with extended revision
+information, including the availability and status of each revision. This array
+field contains objects with following structure:</p>
+<ul class="simple">
+<li><strong>rev</strong> (<em>string</em>): Full revision string</li>
+<li><strong>status</strong> (<em>string</em>): Status of the revision.
+Maybe one of:<ul>
+<li><code class="docutils literal"><span class="pre">available</span></code>: Revision is available for retrieving with <cite>rev</cite> query
+parameter</li>
+<li><code class="docutils literal"><span class="pre">missing</span></code>: Revision is not available</li>
+<li><code class="docutils literal"><span class="pre">deleted</span></code>: Revision belongs to deleted document</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="obtaining-a-specific-revision">
+<h2>1.4.1.4. Obtaining a Specific Revision<a class="headerlink" href="#obtaining-a-specific-revision" title="Permalink to this headline">¶</a></h2>
+<p>To get a specific revision, use the <code class="docutils literal"><span class="pre">rev</span></code> argument to the request, and
+specify the full revision number. The specified revision of the document will
+be returned, including a <code class="docutils literal"><span class="pre">_rev</span></code> field specifying the revision that was
+requested.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/SpaghettiWithMeatballs?rev=6-136813b440a00a24834f5cb1ddf5b1f1</span>  <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">271</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 11:40:55 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;6-136813b440a00a24834f5cb1ddf5b1f1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="retrieving-deleted-documents">
+<h3>1.4.1.4.1. Retrieving Deleted Documents<a class="headerlink" href="#retrieving-deleted-documents" title="Permalink to this headline">¶</a></h3>
+<p>CouchDB doesn’t actually delete documents via <a class="reference internal" href="#delete--db-docid" title="DELETE /{db}/{docid}"><code class="xref http http-delete docutils literal"><span class="pre">DELETE</span> <span class="pre">/{db}/{docid}</span></code></a>.
+Instead, it leaves tombstone with very basic information about the
+document. If you just <a class="reference internal" href="#get--db-docid" title="GET /{db}/{docid}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/{db}/{docid}</span></code></a> CouchDB returns <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a>
+response:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/FishStew</span>  <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">404</span> <span class="ne">Object Not Found</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">41</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 12:23:27 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;not_found&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;reason&quot;</span><span class="p">:</span> <span class="s2">&quot;deleted&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>However, you may retrieve document’s tombstone by using <code class="docutils literal"><span class="pre">rev</span></code> query parameter
+with <a class="reference internal" href="#get--db-docid" title="GET /{db}/{docid}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/{db}/{docid}</span></code></a> request:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/FishStew?rev=2-056f5f44046ecafc08a2bc2b9c229e20</span>  <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">79</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 12:30:22 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;2-056f5f44046ecafc08a2bc2b9c229e20&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_deleted&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;FishStew&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;2-056f5f44046ecafc08a2bc2b9c229e20&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="updating-an-existing-document">
+<h2>1.4.1.5. Updating an Existing Document<a class="headerlink" href="#updating-an-existing-document" title="Permalink to this headline">¶</a></h2>
+<p>To update an existing document you must specify the current revision
+number within the <code class="docutils literal"><span class="pre">_rev</span></code> parameter.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">PUT</span> <span class="nn">/recipes/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">258</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;_rev&quot;</span><span class="p">:</span> <span class="s2">&quot;1-917fa2381192822767f010b95b45325b&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;serving&quot;</span><span class="p">:</span> <span class="s2">&quot;hot&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, you can supply the current revision number in the <code class="docutils literal"><span class="pre">If-Match</span></code>
+HTTP header of the request:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">PUT</span> <span class="nn">/recipes/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">258</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">If-Match</span><span class="o">:</span> <span class="l">1-917fa2381192822767f010b95b45325b</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ingredients&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;spaghetti&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tomato sauce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meatballs&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Spaghetti with meatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;serving&quot;</span><span class="p">:</span> <span class="s2">&quot;hot&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">85</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 20:33:56 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;2-790895a73b63fb91dd863388398483dd&quot;</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">http://localhost:5984/recipes/SpaghettiWithMeatballs</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;2-790895a73b63fb91dd863388398483dd&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="copying-from-a-specific-revision">
+<h2>1.4.1.6. Copying from a Specific Revision<a class="headerlink" href="#copying-from-a-specific-revision" title="Permalink to this headline">¶</a></h2>
+<p>To copy <em>from</em> a specific version, use the <code class="docutils literal"><span class="pre">rev</span></code> argument to the query string
+or <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24">If-Match</a>:</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">COPY</span> <span class="nn">/recipes/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Destination</span><span class="o">:</span> <span class="l">SpaghettiWithMeatballs_Original</span>
+<span class="na">If-Match</span><span class="o">:</span> <span class="l">1-917fa2381192822767f010b95b45325b</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">93</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 14:21:00 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;1-917fa2381192822767f010b95b45325b&quot;</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">http://localhost:5984/recipes/SpaghettiWithMeatballs_Original</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs_Original&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;1-917fa2381192822767f010b95b45325b&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="copying-to-an-existing-document">
+<span id="copy-to-existing-document"></span><h2>1.4.1.7. Copying to an Existing Document<a class="headerlink" href="#copying-to-an-existing-document" title="Permalink to this headline">¶</a></h2>
+<p>To copy to an existing document, you must specify the current revision string
+for the target document by appending the <code class="docutils literal"><span class="pre">rev</span></code> parameter to the
+<a class="reference external" href="http://tools.ietf.org/html/rfc2518#section-9.3">Destination</a> header string.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">COPY</span> <span class="nn">/recipes/SpaghettiWithMeatballs?rev=8-6f5ad8db0f34af24a6e0984cd1a6cfb9</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Destination</span><span class="o">:</span> <span class="l">SpaghettiWithMeatballs_Original?rev=1-917fa2381192822767f010b95b45325b</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">93</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 14 Aug 2013 14:21:00 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;2-62e778c9ec09214dd685a981dcc24074&quot;&quot;</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">http://localhost:5984/recipes/SpaghettiWithMeatballs_Original</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;SpaghettiWithMeatballs_Original&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rev&quot;</span><span class="p">:</span> <span class="s2">&quot;2-62e778c9ec09214dd685a981dcc24074&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="attachments.html" class="btn btn-neutral float-right" title="1.4.2. /db/doc/attachment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="1.4. Documents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

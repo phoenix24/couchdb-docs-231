@@ -1,0 +1,466 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.3. Erlang &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/query-server/erlang.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../index.html"/>
+        <link rel="up" title="3. Query Server" href="index.html"/>
+        <link rel="next" title="1. Release Notes" href="../whatsnew/index.html"/>
+        <link rel="prev" title="3.2. JavaScript" href="javascript.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">1. API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. Query Server</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="protocol.html">3.1. Query Server Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="javascript.html">3.2. JavaScript</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.3. Erlang</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../http-api.html">API Quick Reference</a></li>
+<li><a href="../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">3. Query Server</a> &raquo;</li>
+        
+      <li>3.3. Erlang</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/query-server/erlang.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="erlang">
+<span id="query-server-erlang"></span><h1>3.3. Erlang<a class="headerlink" href="#erlang" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Erlang query server is disabled by default.
+Read <a class="reference internal" href="../config/query-servers.html#config-native-query-servers"><span class="std std-ref">configuration guide</span></a> about
+reasons why and how to enable it.</p>
+</div>
+<dl class="function">
+<dt id="Emit">
+<code class="descname">Emit</code><span class="sig-paren">(</span><em>Id</em>, <em>Value</em><span class="sig-paren">)</span><a class="headerlink" href="#Emit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emits <cite>key</cite>-<cite>value</cite> pairs to view indexer process.</p>
+<div class="highlight-erlang"><div class="highlight"><pre><span class="k">fun</span><span class="p">({</span><span class="nv">Doc</span><span class="p">})</span> <span class="o">-&gt;</span>
+    <span class="o">&lt;&lt;</span><span class="nv">K</span><span class="p">,_</span><span class="o">/</span><span class="n">binary</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nn">proplists</span><span class="p">:</span><span class="nf">get_value</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="s">&quot;_rev&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">Doc</span><span class="p">,</span> <span class="n">null</span><span class="p">),</span>
+    <span class="nv">V</span> <span class="o">=</span> <span class="nn">proplists</span><span class="p">:</span><span class="nf">get_value</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="s">&quot;_id&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">Doc</span><span class="p">,</span> <span class="n">null</span><span class="p">),</span>
+    <span class="nv">Emit</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="nv">K</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">V</span><span class="p">)</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="FoldRows">
+<code class="descname">FoldRows</code><span class="sig-paren">(</span><em>Fun</em>, <em>Acc</em><span class="sig-paren">)</span><a class="headerlink" href="#FoldRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper to iterate over all rows in a list function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Fun</strong> – Function object.</li>
+<li><strong>Acc</strong> – The value previously returned by <cite>Fun</cite>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-erlang"><div class="highlight"><pre><span class="k">fun</span><span class="p">(</span><span class="nv">Head</span><span class="p">,</span> <span class="p">{</span><span class="nv">Req</span><span class="p">})</span> <span class="o">-&gt;</span>
+    <span class="nv">Fun</span> <span class="o">=</span> <span class="k">fun</span><span class="p">({</span><span class="nv">Row</span><span class="p">},</span> <span class="nv">Acc</span><span class="p">)</span> <span class="o">-&gt;</span>
+        <span class="nv">Id</span> <span class="o">=</span> <span class="nn">couch_util</span><span class="p">:</span><span class="nf">get_value</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="s">&quot;id&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">Row</span><span class="p">),</span>
+        <span class="nv">Send</span><span class="p">(</span><span class="nb">list_to_binary</span><span class="p">(</span><span class="nn">io_lib</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">&quot;Previous doc id: </span><span class="si">~p~n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nv">Acc</span><span class="p">]))),</span>
+        <span class="nv">Send</span><span class="p">(</span><span class="nb">list_to_binary</span><span class="p">(</span><span class="nn">io_lib</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">&quot;Current  doc id: </span><span class="si">~p~n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nv">Id</span><span class="p">]))),</span>
+        <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Id</span><span class="p">}</span>
+    <span class="k">end</span><span class="p">,</span>
+    <span class="nv">FoldRows</span><span class="p">(</span><span class="nv">Fun</span><span class="p">,</span> <span class="n">nil</span><span class="p">),</span>
+    <span class="s">&quot;&quot;</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="GetRow">
+<code class="descname">GetRow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GetRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the next row from a related view result.</p>
+<div class="highlight-erlang"><div class="highlight"><pre><span class="c">%% FoldRows background implementation.</span>
+<span class="c">%% https://git-wip-us.apache.org/repos/asf?p=couchdb.git;a=blob;f=src/couchdb/couch_native_process.erl;hb=HEAD#l368</span>
+<span class="c">%%</span>
+<span class="nf">foldrows</span><span class="p">(</span><span class="nv">GetRow</span><span class="p">,</span> <span class="nv">ProcRow</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nv">GetRow</span><span class="p">()</span> <span class="k">of</span>
+        <span class="n">nil</span> <span class="o">-&gt;</span>
+            <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">};</span>
+        <span class="nv">Row</span> <span class="o">-&gt;</span>
+            <span class="k">case</span> <span class="p">(</span><span class="k">catch</span> <span class="nv">ProcRow</span><span class="p">(</span><span class="nv">Row</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">))</span> <span class="k">of</span>
+                <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Acc2</span><span class="p">}</span> <span class="o">-&gt;</span>
+                    <span class="n">foldrows</span><span class="p">(</span><span class="nv">GetRow</span><span class="p">,</span> <span class="nv">ProcRow</span><span class="p">,</span> <span class="nv">Acc2</span><span class="p">);</span>
+                <span class="p">{</span><span class="n">stop</span><span class="p">,</span> <span class="nv">Acc2</span><span class="p">}</span> <span class="o">-&gt;</span>
+                    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Acc2</span><span class="p">}</span>
+            <span class="k">end</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Log">
+<code class="descname">Log</code><span class="sig-paren">(</span><em>Msg</em><span class="sig-paren">)</span><a class="headerlink" href="#Log" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Msg</strong> – Log a message at the <cite>INFO</cite> level.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-erlang"><div class="highlight"><pre><span class="k">fun</span><span class="p">({</span><span class="nv">Doc</span><span class="p">})</span> <span class="o">-&gt;</span>
+    <span class="o">&lt;&lt;</span><span class="nv">K</span><span class="p">,_</span><span class="o">/</span><span class="n">binary</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nn">proplists</span><span class="p">:</span><span class="nf">get_value</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="s">&quot;_rev&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">Doc</span><span class="p">,</span> <span class="n">null</span><span class="p">),</span>
+    <span class="nv">V</span> <span class="o">=</span> <span class="nn">proplists</span><span class="p">:</span><span class="nf">get_value</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="s">&quot;_id&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">Doc</span><span class="p">,</span> <span class="n">null</span><span class="p">),</span>
+    <span class="nv">Log</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">flatten</span><span class="p">(</span><span class="nn">io_lib</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">&quot;Hello from </span><span class="si">~s</span><span class="s"> doc!&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nv">V</span><span class="p">]))),</span>
+    <span class="nv">Emit</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="nv">K</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">V</span><span class="p">)</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+</div>
+<p>After the map function has run, the following line can be found in
+CouchDB logs (e.g. at <cite>/var/log/couchdb/couch.log</cite>):</p>
+<div class="highlight-text"><div class="highlight"><pre>[Sun, 04 Nov 2012 11:33:58 GMT] [info] [&lt;0.9144.2&gt;] Hello from 8d300b86622d67953d102165dbe99467 doc!
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Send">
+<code class="descname">Send</code><span class="sig-paren">(</span><em>Chunk</em><span class="sig-paren">)</span><a class="headerlink" href="#Send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a single string <cite>Chunk</cite> in response.</p>
+<div class="highlight-erlang"><div class="highlight"><pre><span class="k">fun</span><span class="p">(</span><span class="nv">Head</span><span class="p">,</span> <span class="p">{</span><span class="nv">Req</span><span class="p">})</span> <span class="o">-&gt;</span>
+    <span class="nv">Send</span><span class="p">(</span><span class="s">&quot;Hello,&quot;</span><span class="p">),</span>
+    <span class="nv">Send</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">),</span>
+    <span class="nv">Send</span><span class="p">(</span><span class="s">&quot;Couch&quot;</span><span class="p">),</span>
+    <span class="s">&quot;!&quot;</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+</div>
+<p>The function above produces the following response:</p>
+<div class="highlight-text"><div class="highlight"><pre>Hello, Couch!
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Start">
+<code class="descname">Start</code><span class="sig-paren">(</span><em>Headers</em><span class="sig-paren">)</span><a class="headerlink" href="#Start" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Headers</strong> – Proplist of <a class="reference internal" href="../json-structure.html#response-object"><span class="std std-ref">response object</span></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Initialize <a class="reference internal" href="../ddocs/ddocs.html#listfun"><span class="std std-ref">List Functions</span></a> response. At this point, response code and headers
+may be defined. For example, this function redirects to the CouchDB
+web site:</p>
+<div class="highlight-erlang"><div class="highlight"><pre><span class="k">fun</span><span class="p">(</span><span class="nv">Head</span><span class="p">,</span> <span class="p">{</span><span class="nv">Req</span><span class="p">})</span> <span class="o">-&gt;</span>
+    <span class="nv">Start</span><span class="p">({[{</span><span class="o">&lt;&lt;</span><span class="s">&quot;code&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="mi">302</span><span class="p">},</span>
+            <span class="p">{</span><span class="o">&lt;&lt;</span><span class="s">&quot;headers&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="p">{[</span>
+                <span class="p">{</span><span class="o">&lt;&lt;</span><span class="s">&quot;Location&quot;</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="o">&lt;&lt;</span><span class="s">&quot;http://couchdb.apache.org&quot;</span><span class="o">&gt;&gt;</span><span class="p">}]</span>
+            <span class="p">}}</span>
+        <span class="p">]}),</span>
+    <span class="s">&quot;Relax!&quot;</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../whatsnew/index.html" class="btn btn-neutral float-right" title="1. Release Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="javascript.html" class="btn btn-neutral" title="3.2. JavaScript" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

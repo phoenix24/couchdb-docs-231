@@ -1,0 +1,479 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.7. Upgrading from prior CouchDB releases &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/install/upgrading.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../index.html"/>
+        <link rel="up" title="1. Installation" href="index.html"/>
+        <link rel="next" title="1.8. Troubleshooting an Installation" href="troubleshooting.html"/>
+        <link rel="prev" title="1.6. Installation via Snap" href="snap.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Installation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="unix.html">1.1. Installation on Unix-like systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="windows.html">1.2. Installation on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mac.html">1.3. Installation on macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="freebsd.html">1.4. Installation on FreeBSD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">1.5. Installation via Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snap.html">1.6. Installation via Snap</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.7. Upgrading from prior CouchDB releases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#important-notes">1.7.1. Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upgrading-from-couchdb-2-x">1.7.2. Upgrading from CouchDB 2.x</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#standalone-single-node-upgrades">1.7.2.1. Standalone (single) node upgrades</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cluster-upgrades">1.7.2.2. Cluster upgrades</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#upgrading-from-couchdb-1-x">1.7.3. Upgrading from CouchDB 1.x</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#couchup-utility">1.7.3.1. <code class="docutils literal"><span class="pre">couchup</span></code> utility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-couchdb-1-x-migration">1.7.3.2. Manual CouchDB 1.x migration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">1.8. Troubleshooting an Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">1. API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query-server/index.html">3. Query Server</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../http-api.html">API Quick Reference</a></li>
+<li><a href="../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">1. Installation</a> &raquo;</li>
+        
+      <li>1.7. Upgrading from prior CouchDB releases</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/install/upgrading.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="upgrading-from-prior-couchdb-releases">
+<span id="install-upgrading"></span><h1>1.7. Upgrading from prior CouchDB releases<a class="headerlink" href="#upgrading-from-prior-couchdb-releases" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="important-notes">
+<h2>1.7.1. Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>Always back up your</strong> <code class="docutils literal"><span class="pre">data/</span></code> <strong>and</strong> <code class="docutils literal"><span class="pre">etc/</span></code> <strong>directories prior to
+upgrading CouchDB.</strong></li>
+<li>We recommend that you overwrite your <code class="docutils literal"><span class="pre">etc/default.ini</span></code> file with the
+version provided by the new release. New defaults sometimes contain
+mandatory changes to enable default functionality. Always places your
+customizations in <code class="docutils literal"><span class="pre">etc/local.ini</span></code> or any <code class="docutils literal"><span class="pre">etc/local.d/*.ini</span></code> file.</li>
+</ul>
+</div>
+<div class="section" id="upgrading-from-couchdb-2-x">
+<h2>1.7.2. Upgrading from CouchDB 2.x<a class="headerlink" href="#upgrading-from-couchdb-2-x" title="Permalink to this headline">¶</a></h2>
+<p>If you are coming from a prior release of CouchDB 2.x, upgrading is simple.</p>
+<div class="section" id="standalone-single-node-upgrades">
+<h3>1.7.2.1. Standalone (single) node upgrades<a class="headerlink" href="#standalone-single-node-upgrades" title="Permalink to this headline">¶</a></h3>
+<p>If you are running a standalone (single) CouchDB node:</p>
+<ol class="arabic simple">
+<li>Plan for downtime.</li>
+<li>Backup everything.</li>
+<li>Check for new recommended settings in the shipped <code class="docutils literal"><span class="pre">etc/local.ini</span></code> file,
+and merge any changes desired into your own local settings file(s).</li>
+<li>Stop CouchDB.</li>
+<li>Upgrade CouchDB in place.</li>
+<li>Start CouchDB.</li>
+<li>Relax! You’re done.</li>
+</ol>
+</div>
+<div class="section" id="cluster-upgrades">
+<h3>1.7.2.2. Cluster upgrades<a class="headerlink" href="#cluster-upgrades" title="Permalink to this headline">¶</a></h3>
+<p>CouchDB 2.x is explicitly designed to allow “mixed clusters” during the
+upgrade process. This allows you to perform a rolling restart across
+a cluster, upgrading one node at a time, for a <em>zero downtime upgrade</em>.
+The process is also entirely scriptable within your configuration
+management tool of choice.</p>
+<p>We’re proud of this feature, and you should be, too!</p>
+<p>If you are running a CouchDB cluster:</p>
+<ol class="arabic simple">
+<li>Backup everything.</li>
+<li>Check for new recommended settings in the shipped <code class="docutils literal"><span class="pre">etc/local.ini</span></code> file,
+and merge any changes desired into your own local settings file(s),
+staging these changes to occur as you upgrade the node.</li>
+<li>Stop CouchDB on a single node.</li>
+<li>Upgrade that CouchDB install in place.</li>
+<li>Start CouchDB.</li>
+<li>Double-check that the node has re-joined the cluster through the
+<cite>/_membership &lt;api/server/membership&gt;</cite> endpoint. If your load balancer has
+health check functionality driven by the <cite>/_up &lt;api/server/up&gt;</cite> endpoint,
+check whether it thinks the node is healthy as well.</li>
+<li>Repeat the last 4 steps on the remaining nodes in the cluster.</li>
+<li>Relax! You’re done.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="upgrading-from-couchdb-1-x">
+<h2>1.7.3. Upgrading from CouchDB 1.x<a class="headerlink" href="#upgrading-from-couchdb-1-x" title="Permalink to this headline">¶</a></h2>
+<p>CouchDB 2.x fully supports upgrading from CouchDB 1.x. A data migration
+process is required to use CouchDB 1.x databases in CouchDB 2.x. CouchDB
+2.1 supplies a utility, <code class="docutils literal"><span class="pre">couchup</span></code>, to simplify the migration process.</p>
+<div class="section" id="couchup-utility">
+<h3>1.7.3.1. <code class="docutils literal"><span class="pre">couchup</span></code> utility<a class="headerlink" href="#couchup-utility" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">couchup</span></code> utility is a Python script that supports listing CouchDB
+1.x databases on a CouchDB 2.x installation, migrating them for use with
+CouchDB 2.x, rebuilding any database views after migration, and deleting
+the 1.x databases once migration is complete.</p>
+<p><code class="docutils literal"><span class="pre">couchup</span></code> runs under Python 2.7 or 3.x, and requires the Python
+<a class="reference external" href="http://python-requests.org/">requests library</a>, and can optionally
+make use of the Python <a class="reference external" href="https://pypi.python.org/pypi/progressbar">progressbar library</a>.</p>
+<div class="section" id="overview">
+<h4>1.7.3.1.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h4>
+<p>couchup makes it easy to migrate your CouchDB 1.x databases to CouchDB
+2.x by providing 4 useful sub-commands:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">list</span></code> - lists all CouchDB 1.x databases</li>
+<li><code class="docutils literal"><span class="pre">replicate</span></code> - replicates one or more 1.x databases to CouchDB 2.x</li>
+<li><code class="docutils literal"><span class="pre">rebuild</span></code> - rebuilds one or more CouchDB 2.x views</li>
+<li><code class="docutils literal"><span class="pre">delete</span></code> - deletes one or more CouchDB 1.x databases</li>
+</ul>
+<p>Once you have installed CouchDB 2.x, copy the .couch files from
+your 1.x installation (or, if you’ve upgraded in-place, do nothing),
+ensure the permissions on the files are set so the <code class="docutils literal"><span class="pre">couchdb</span></code> user has
+proper read/write access, then use commands similar to the following:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>couchup list           <span class="c"># Shows your unmigrated 1.x databases</span>
+<span class="nv">$ </span>couchup replicate -a   <span class="c"># Replicates your 1.x DBs to 2.x</span>
+<span class="nv">$ </span>couchup rebuild -a     <span class="c"># Optional; starts rebuilding your views</span>
+<span class="nv">$ </span>couchup delete -a      <span class="c"># Deletes your 1.x DBs (careful!)</span>
+<span class="nv">$ </span>couchup list           <span class="c"># Should show no remaining databases!</span>
+</pre></div>
+</div>
+<p>The same process works for moving from a single 1.x node to a cluster of
+2.x nodes; the only difference is that you must <a class="reference internal" href="../setup/index.html#setup"><span class="std std-ref">complete cluster setup</span></a>
+prior to running the couchup commands.</p>
+</div>
+<div class="section" id="special-features">
+<h4>1.7.3.1.2. Special Features<a class="headerlink" href="#special-features" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Lots of extra help is available via:</li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>couchup -h
+<span class="nv">$ </span>couchup &lt;sub-command&gt; -h
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Various optional arguments provide for admin login/password,
+overriding ports, quiet mode and so on.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">couchup</span> <span class="pre">delete</span></code> will NOT delete your 1.x DBs unless the contents are
+identical to the replicated 2.x DBs, or you override with the
+<code class="docutils literal"><span class="pre">-f/--force</span></code> command (be VERY careful with this!!)</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">couchup</span> <span class="pre">replicate</span></code> supports an optional flag, <code class="docutils literal"><span class="pre">-f/--filter-deleted</span></code>, to
+filter delete documents during the replication process. This can
+improve the performance and disk-size of your database if it has a lot
+of deleted documents.</p>
+<p>It is IMPORTANT that no documents be deleted
+from the 1.x database during this process, or those deletions may not
+successfully replicate to the 2.x database. (It’s recommended that
+you not access or modify the 1.x database at all during the whole
+<code class="docutils literal"><span class="pre">couchup</span></code> process.)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="manual-couchdb-1-x-migration">
+<h3>1.7.3.2. Manual CouchDB 1.x migration<a class="headerlink" href="#manual-couchdb-1-x-migration" title="Permalink to this headline">¶</a></h3>
+<p>If you cannot use the <code class="docutils literal"><span class="pre">couchup</span></code> utility, or prefer to migrate
+yourself, a manual migration is also possible. In this process, a
+full-featured HTTP client such as <code class="docutils literal"><span class="pre">curl</span></code> is required.</p>
+<p>The process is similar to the automated approach:</p>
+<ol class="arabic simple">
+<li>Copy all of your 1.x .couch files to the CouchDB 2.x <code class="docutils literal"><span class="pre">data/</span></code>
+directory and start CouchDB (2.x).</li>
+<li>Set up replication for each database from the node-local port
+(default: 5986) to the clustered port (default: 5984). This can be
+done via the <a class="reference internal" href="../api/server/common.html#api-server-replicate"><span class="std std-ref">/_replicate</span></a> endpoint or
+the <a class="reference internal" href="../replication/replicator.html#replicator"><span class="std std-ref">replicator database</span></a>.</li>
+<li>Rebuild each view by accessing it through the clustered port.</li>
+<li>Confirm that all databases and views can be accessed as desired.</li>
+<li>Remove the 1.x databases via a <code class="docutils literal"><span class="pre">DELETE</span></code> request on the
+<strong>node-local</strong> port (default: 5986).</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="1.8. Troubleshooting an Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="snap.html" class="btn btn-neutral" title="1.6. Installation via Snap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

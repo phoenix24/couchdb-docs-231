@@ -1,0 +1,917 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.4. Shard Management &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/cluster/sharding.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../index.html"/>
+        <link rel="up" title="4. Cluster Management" href="index.html"/>
+        <link rel="next" title="4.5. Clustered Purge" href="purging.html"/>
+        <link rel="prev" title="4.3. Database Management" href="databases.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. Cluster Management</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="theory.html">4.1. Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nodes.html">4.2. Node Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="databases.html">4.3. Database Management</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. Shard Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.4.1. Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#shards-and-replicas">4.4.1.1. Shards and Replicas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quorum">4.4.1.2. Quorum</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examining-database-shards">4.4.2. Examining database shards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moving-a-shard">4.4.3. Moving a shard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#copying-shard-files">4.4.3.1. Copying shard files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-the-target-node-to-true-maintenance-mode">4.4.3.2. Set the target node to <code class="docutils literal"><span class="pre">true</span></code> maintenance mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updating-cluster-metadata-to-reflect-the-new-target-shard-s">4.4.3.3. Updating cluster metadata to reflect the new target shard(s)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forcing-synchronization-of-the-shard-s">4.4.3.4. Forcing synchronization of the shard(s)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitor-internal-replication-to-ensure-up-to-date-shard-s">4.4.3.5. Monitor internal replication to ensure up-to-date shard(s)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clear-the-target-node-s-maintenance-mode">4.4.3.6. Clear the target node’s maintenance mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-cluster-metadata-again-to-remove-the-source-shard">4.4.3.7. Update cluster metadata again to remove the source shard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-the-shard-and-secondary-index-files-from-the-source-node">4.4.3.8. Remove the shard and secondary index files from the source node</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-database-placement">4.4.4. Specifying database placement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resharding-a-database-to-a-new-q-value">4.4.5. Resharding a database to a new q value</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="purging.html">4.5. Clustered Purge</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">1. API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query-server/index.html">3. Query Server</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../http-api.html">API Quick Reference</a></li>
+<li><a href="../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">4. Cluster Management</a> &raquo;</li>
+        
+      <li>4.4. Shard Management</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/cluster/sharding.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="shard-management">
+<span id="cluster-sharding"></span><h1>4.4. Shard Management<a class="headerlink" href="#shard-management" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="cluster-sharding-intro"></span><h2>4.4.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This document discusses how sharding works in CouchDB along with how to
+safely add, move, remove, and create placement rules for shards and
+shard replicas.</p>
+<p>A <a class="reference external" href="https://en.wikipedia.org/wiki/Shard_(database_architecture)">shard</a> is a
+horizontal partition of data in a database. Partitioning data into
+shards and distributing copies of each shard (called “shard replicas” or
+just “replicas”) to different nodes in a cluster gives the data greater
+durability against node loss. CouchDB clusters automatically shard
+databases and distribute the subsets of documents that compose each
+shard among nodes. Modifying cluster membership and sharding behavior
+must be done manually.</p>
+<div class="section" id="shards-and-replicas">
+<h3>4.4.1.1. Shards and Replicas<a class="headerlink" href="#shards-and-replicas" title="Permalink to this headline">¶</a></h3>
+<p>How many shards and replicas each database has can be set at the global
+level, or on a per-database basis. The relevant parameters are <code class="docutils literal"><span class="pre">q</span></code> and
+<code class="docutils literal"><span class="pre">n</span></code>.</p>
+<p><em>q</em> is the number of database shards to maintain. <em>n</em> is the number of
+copies of each document to distribute. The default value for <code class="docutils literal"><span class="pre">n</span></code> is <code class="docutils literal"><span class="pre">3</span></code>,
+and for <code class="docutils literal"><span class="pre">q</span></code> is <code class="docutils literal"><span class="pre">8</span></code>. With <code class="docutils literal"><span class="pre">q=8</span></code>, the database is split into 8 shards. With
+<code class="docutils literal"><span class="pre">n=3</span></code>, the cluster distributes three replicas of each shard. Altogether,
+that’s 24 shard replicas for a single database. In a default 3-node cluster,
+each node would receive 8 shards. In a 4-node cluster, each node would
+receive 6 shards. We recommend in the general case that the number of
+nodes in your cluster should be a multiple of <code class="docutils literal"><span class="pre">n</span></code>, so that shards are
+distributed evenly.</p>
+<p>CouchDB nodes have a <code class="docutils literal"><span class="pre">etc/local.ini</span></code> file with a section named
+<a class="reference external" href="../config/cluster.html">cluster</a> which looks like this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="p">[</span><span class="n">cluster</span><span class="p">]</span>
+<span class="n">q</span><span class="o">=</span><span class="mi">8</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">3</span>
+</pre></div>
+</div>
+<p>These settings can be modified to set sharding defaults for all
+databases, or they can be set on a per-database basis by specifying the
+<code class="docutils literal"><span class="pre">q</span></code> and <code class="docutils literal"><span class="pre">n</span></code> query parameters when the database is created. For
+example:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -X PUT <span class="s2">&quot;</span><span class="nv">$COUCH_URL</span><span class="s2">:5984/database-name?q=4&amp;n=2&quot;</span>
+</pre></div>
+</div>
+<p>That creates a database that is split into 4 shards and 2 replicas,
+yielding 8 shard replicas distributed throughout the cluster.</p>
+</div>
+<div class="section" id="quorum">
+<h3>4.4.1.2. Quorum<a class="headerlink" href="#quorum" title="Permalink to this headline">¶</a></h3>
+<p>Depending on the size of the cluster, the number of shards per database,
+and the number of shard replicas, not every node may have access to
+every shard, but every node knows where all the replicas of each shard
+can be found through CouchDB’s internal shard map.</p>
+<p>Each request that comes in to a CouchDB cluster is handled by any one
+random coordinating node. This coordinating node proxies the request to
+the other nodes that have the relevant data, which may or may not
+include itself. The coordinating node sends a response to the client
+once a <a class="reference external" href="https://en.wikipedia.org/wiki/Quorum_(distributed_computing)">quorum</a> of
+database nodes have responded; 2, by default. The default required size
+of a quorum is equal to <code class="docutils literal"><span class="pre">r=w=((n+1)/2)</span></code> where <code class="docutils literal"><span class="pre">r</span></code> refers to the size
+of a read quorum, <code class="docutils literal"><span class="pre">w</span></code> refers to the size of a write quorum, and <code class="docutils literal"><span class="pre">n</span></code>
+refers to the number of replicas of each shard. In a default cluster where
+<code class="docutils literal"><span class="pre">n</span></code> is 3, <code class="docutils literal"><span class="pre">((n+1)/2)</span></code> would be 2.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Each node in a cluster can be a coordinating node for any one
+request. There are no special roles for nodes inside the cluster.</p>
+</div>
+<p>The size of the required quorum can be configured at request time by
+setting the <code class="docutils literal"><span class="pre">r</span></code> parameter for document and view reads, and the <code class="docutils literal"><span class="pre">w</span></code>
+parameter for document writes. For example, here is a request that
+directs the coordinating node to send a response once at least two nodes
+have responded:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl <span class="s2">&quot;</span><span class="nv">$COUCH_URL</span><span class="s2">:5984/&lt;db&gt;/&lt;doc&gt;?r=2&quot;</span>
+</pre></div>
+</div>
+<p>Here is a similar example for writing a document:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -X PUT <span class="s2">&quot;</span><span class="nv">$COUCH_URL</span><span class="s2">:5984/&lt;db&gt;/&lt;doc&gt;?w=2&quot;</span> -d <span class="s1">&#39;{...}&#39;</span>
+</pre></div>
+</div>
+<p>Setting <code class="docutils literal"><span class="pre">r</span></code> or <code class="docutils literal"><span class="pre">w</span></code> to be equal to <code class="docutils literal"><span class="pre">n</span></code> (the number of replicas)
+means you will only receive a response once all nodes with relevant
+shards have responded or timed out, and as such this approach does not
+guarantee <a class="reference external" href="https://en.wikipedia.org/wiki/ACID#Consistency">ACIDic consistency</a>. Setting <code class="docutils literal"><span class="pre">r</span></code> or
+<code class="docutils literal"><span class="pre">w</span></code> to 1 means you will receive a response after only one relevant
+node has responded.</p>
+</div>
+</div>
+<div class="section" id="examining-database-shards">
+<span id="cluster-sharding-examine"></span><h2>4.4.2. Examining database shards<a class="headerlink" href="#examining-database-shards" title="Permalink to this headline">¶</a></h2>
+<p>There are a few API endpoints that help you understand how a database
+is sharded. Let’s start by making a new database on a cluster, and putting
+a couple of documents into it:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -X PUT <span class="nv">$COUCH_URL</span>:5984/mydb
+<span class="o">{</span><span class="s2">&quot;ok&quot;</span>:true<span class="o">}</span>
+<span class="nv">$ </span>curl -X PUT <span class="nv">$COUCH_URL</span>:5984/mydb/joan -d <span class="s1">&#39;{&quot;loves&quot;:&quot;cats&quot;}&#39;</span>
+<span class="o">{</span><span class="s2">&quot;ok&quot;</span>:true,<span class="s2">&quot;id&quot;</span>:<span class="s2">&quot;joan&quot;</span>,<span class="s2">&quot;rev&quot;</span>:<span class="s2">&quot;1-cc240d66a894a7ee7ad3160e69f9051f&quot;</span><span class="o">}</span>
+<span class="nv">$ </span>curl -X PUT <span class="nv">$COUCH_URL</span>:5984/mydb/robert -d <span class="s1">&#39;{&quot;loves&quot;:&quot;dogs&quot;}&#39;</span>
+<span class="o">{</span><span class="s2">&quot;ok&quot;</span>:true,<span class="s2">&quot;id&quot;</span>:<span class="s2">&quot;robert&quot;</span>,<span class="s2">&quot;rev&quot;</span>:<span class="s2">&quot;1-4032b428c7574a85bc04f1f271be446e&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>First, the top level <a class="reference internal" href="../api/database/common.html#api-db"><span class="std std-ref">/db</span></a> endpoint will tell you what the sharding parameters
+are for your database:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -s <span class="nv">$COUCH_URL</span>:5984/db <span class="p">|</span> jq .
+<span class="o">{</span>
+  <span class="s2">&quot;db_name&quot;</span>: <span class="s2">&quot;mydb&quot;</span>,
+...
+  <span class="s2">&quot;cluster&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;q&quot;</span>: 8,
+    <span class="s2">&quot;n&quot;</span>: 3,
+    <span class="s2">&quot;w&quot;</span>: 2,
+    <span class="s2">&quot;r&quot;</span>: 2
+  <span class="o">}</span>,
+...
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>So we know this database was created with 8 shards (<code class="docutils literal"><span class="pre">q=8</span></code>), and each
+shard has 3 replicas (<code class="docutils literal"><span class="pre">n=3</span></code>) for a total of 24 shard replicas across
+the nodes in the cluster.</p>
+<p>Now, let’s see how those shard replicas are placed on the cluster with
+the <a class="reference internal" href="../api/database/shard.html#api-db-shards"><span class="std std-ref">/db/_shards</span></a> endpoint:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -s <span class="nv">$COUCH_URL</span>:5984/mydb/_shards <span class="p">|</span> jq .
+<span class="o">{</span>
+  <span class="s2">&quot;shards&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;00000000-1fffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node2@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;20000000-3fffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node2@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node3@127.0.0.1&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;40000000-5fffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node2@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node3@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;60000000-7fffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node3@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;80000000-9fffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node2@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;a0000000-bfffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node2@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node3@127.0.0.1&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;c0000000-dfffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node2@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node3@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;e0000000-ffffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node3@127.0.0.1&quot;</span>,
+      <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+    <span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Now we see that there are actually 4 nodes in this cluster, and CouchDB
+has spread those 24 shard replicas evenly across all 4 nodes.</p>
+<p>We can also see exactly which shard contains a given document with
+the <a class="reference internal" href="../api/database/shard.html#api-db-shards-doc"><span class="std std-ref">/db/_shards/doc</span></a> endpoint:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -s <span class="nv">$COUCH_URL</span>:5984/mydb/_shards/joan <span class="p">|</span> jq .
+<span class="o">{</span>
+  <span class="s2">&quot;range&quot;</span>: <span class="s2">&quot;e0000000-ffffffff&quot;</span>,
+  <span class="s2">&quot;nodes&quot;</span>: <span class="o">[</span>
+    <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+    <span class="s2">&quot;node3@127.0.0.1&quot;</span>,
+    <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+<span class="nv">$ </span>curl -s <span class="nv">$COUCH_URL</span>:5984/mydb/_shards/robert <span class="p">|</span> jq .
+<span class="o">{</span>
+  <span class="s2">&quot;range&quot;</span>: <span class="s2">&quot;60000000-7fffffff&quot;</span>,
+  <span class="s2">&quot;nodes&quot;</span>: <span class="o">[</span>
+    <span class="s2">&quot;node1@127.0.0.1&quot;</span>,
+    <span class="s2">&quot;node3@127.0.0.1&quot;</span>,
+    <span class="s2">&quot;node4@127.0.0.1&quot;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>CouchDB shows us the specific shard into which each of the two sample
+documents is mapped.</p>
+</div>
+<div class="section" id="moving-a-shard">
+<span id="cluster-sharding-move"></span><h2>4.4.3. Moving a shard<a class="headerlink" href="#moving-a-shard" title="Permalink to this headline">¶</a></h2>
+<p>This section describes how to manually place and replace shards. These
+activities are critical steps when you determine your cluster is too big
+or too small, and want to resize it successfully, or you have noticed
+from server metrics that database/shard layout is non-optimal and you
+have some “hot spots” that need resolving.</p>
+<p>Consider a three-node cluster with q=8 and n=3. Each database has 24
+shards, distributed across the three nodes. If you <a class="reference internal" href="nodes.html#cluster-nodes-add"><span class="std std-ref">add a fourth
+node</span></a> to the cluster, CouchDB will not redistribute
+existing database shards to it. This leads to unbalanced load, as the
+new node will only host shards for databases created after it joined the
+cluster. To balance the distribution of shards from existing databases,
+they must be moved manually.</p>
+<p>Moving shards between nodes in a cluster involves the following steps:</p>
+<ol class="arabic simple" start="0">
+<li><a class="reference internal" href="nodes.html#cluster-nodes-add"><span class="std std-ref">Ensure the target node has joined the cluster</span></a>.</li>
+<li>Copy the shard(s) and any secondary
+<a class="reference internal" href="#cluster-sharding-copying"><span class="std std-ref">index shard(s) onto the target node</span></a>.</li>
+<li><a class="reference internal" href="#cluster-sharding-mm"><span class="std std-ref">Set the target node to maintenance mode</span></a>.</li>
+<li>Update cluster metadata
+<a class="reference internal" href="#cluster-sharding-add-shard"><span class="std std-ref">to reflect the new target shard(s)</span></a>.</li>
+<li>Monitor internal replication
+<a class="reference internal" href="#cluster-sharding-verify"><span class="std std-ref">to ensure up-to-date shard(s)</span></a>.</li>
+<li><a class="reference internal" href="#cluster-sharding-mm-2"><span class="std std-ref">Clear the target node’s maintenance mode</span></a>.</li>
+<li>Update cluster metadata again
+<a class="reference internal" href="#cluster-sharding-remove-shard"><span class="std std-ref">to remove the source shard(s)</span></a></li>
+<li>Remove the shard file(s) and secondary index file(s)
+<a class="reference internal" href="#cluster-sharding-remove-shard-files"><span class="std std-ref">from the source node</span></a>.</li>
+</ol>
+<div class="section" id="copying-shard-files">
+<span id="cluster-sharding-copying"></span><h3>4.4.3.1. Copying shard files<a class="headerlink" href="#copying-shard-files" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Technically, copying database and secondary index
+shards is optional. If you proceed to the next step without
+performing this data copy, CouchDB will use internal replication
+to populate the newly added shard replicas. However, copying files
+is faster than internal replication, especially on a busy cluster,
+which is why we recommend performing this manual data copy first.</p>
+</div>
+<p>Shard files live in the <code class="docutils literal"><span class="pre">data/shards</span></code> directory of your CouchDB
+install. Within those subdirectories are the shard files themselves. For
+instance, for a <code class="docutils literal"><span class="pre">q=8</span></code> database called <code class="docutils literal"><span class="pre">abc</span></code>, here is its database shard
+files:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="mi">00000000</span><span class="o">-</span><span class="mi">1</span><span class="n">fffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+<span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="mi">20000000</span><span class="o">-</span><span class="mi">3</span><span class="n">fffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+<span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="mi">40000000</span><span class="o">-</span><span class="mi">5</span><span class="n">fffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+<span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="mi">60000000</span><span class="o">-</span><span class="mi">7</span><span class="n">fffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+<span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="mi">80000000</span><span class="o">-</span><span class="mi">9</span><span class="n">fffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+<span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="n">a0000000</span><span class="o">-</span><span class="n">bfffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+<span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="n">c0000000</span><span class="o">-</span><span class="n">dfffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+<span class="n">data</span><span class="o">/</span><span class="n">shards</span><span class="o">/</span><span class="n">e0000000</span><span class="o">-</span><span class="n">ffffffff</span><span class="o">/</span><span class="n">abc</span><span class="o">.</span><span class="mf">1529362187.</span><span class="n">couch</span>
+</pre></div>
+</div>
+<p>Secondary indexes (including JavaScript views, Erlang views and Mango
+indexes) are also sharded, and their shards should be moved to save the
+new node the effort of rebuilding the view. View shards live in
+<code class="docutils literal"><span class="pre">data/.shards</span></code>. For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">data</span><span class="o">/.</span><span class="n">shards</span>
+<span class="n">data</span><span class="o">/.</span><span class="n">shards</span><span class="o">/</span><span class="n">e0000000</span><span class="o">-</span><span class="n">ffffffff</span><span class="o">/</span><span class="n">_replicator</span><span class="o">.</span><span class="mi">1518451591</span><span class="n">_design</span>
+<span class="n">data</span><span class="o">/.</span><span class="n">shards</span><span class="o">/</span><span class="n">e0000000</span><span class="o">-</span><span class="n">ffffffff</span><span class="o">/</span><span class="n">_replicator</span><span class="o">.</span><span class="mi">1518451591</span><span class="n">_design</span><span class="o">/</span><span class="n">mrview</span>
+<span class="n">data</span><span class="o">/.</span><span class="n">shards</span><span class="o">/</span><span class="n">e0000000</span><span class="o">-</span><span class="n">ffffffff</span><span class="o">/</span><span class="n">_replicator</span><span class="o">.</span><span class="mi">1518451591</span><span class="n">_design</span><span class="o">/</span><span class="n">mrview</span><span class="o">/</span><span class="mi">3</span><span class="n">e823c2a4383ac0c18d4e574135a5b08</span><span class="o">.</span><span class="n">view</span>
+<span class="n">data</span><span class="o">/.</span><span class="n">shards</span><span class="o">/</span><span class="n">c0000000</span><span class="o">-</span><span class="n">dfffffff</span>
+<span class="n">data</span><span class="o">/.</span><span class="n">shards</span><span class="o">/</span><span class="n">c0000000</span><span class="o">-</span><span class="n">dfffffff</span><span class="o">/</span><span class="n">_replicator</span><span class="o">.</span><span class="mi">1518451591</span><span class="n">_design</span>
+<span class="n">data</span><span class="o">/.</span><span class="n">shards</span><span class="o">/</span><span class="n">c0000000</span><span class="o">-</span><span class="n">dfffffff</span><span class="o">/</span><span class="n">_replicator</span><span class="o">.</span><span class="mi">1518451591</span><span class="n">_design</span><span class="o">/</span><span class="n">mrview</span>
+<span class="n">data</span><span class="o">/.</span><span class="n">shards</span><span class="o">/</span><span class="n">c0000000</span><span class="o">-</span><span class="n">dfffffff</span><span class="o">/</span><span class="n">_replicator</span><span class="o">.</span><span class="mi">1518451591</span><span class="n">_design</span><span class="o">/</span><span class="n">mrview</span><span class="o">/</span><span class="mi">3</span><span class="n">e823c2a4383ac0c18d4e574135a5b08</span><span class="o">.</span><span class="n">view</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Since they are files, you can use <code class="docutils literal"><span class="pre">cp</span></code>, <code class="docutils literal"><span class="pre">rsync</span></code>,
+<code class="docutils literal"><span class="pre">scp</span></code> or other file-copying command to copy them from one node to
+another. For example:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># one one machine</span>
+<span class="nv">$ </span>mkdir -p data/.shards/&lt;range&gt;
+<span class="nv">$ </span>mkdir -p data/shards/&lt;range&gt;
+<span class="c"># on the other</span>
+<span class="nv">$ </span>scp &lt;couch-dir&gt;/data/.shards/&lt;range&gt;/&lt;database&gt;.&lt;datecode&gt;* <span class="se">\</span>
+  &lt;node&gt;:&lt;couch-dir&gt;/data/.shards/&lt;range&gt;/
+<span class="nv">$ </span>scp &lt;couch-dir&gt;/data/shards/&lt;range&gt;/&lt;database&gt;.&lt;datecode&gt;.couch <span class="se">\</span>
+  &lt;node&gt;:&lt;couch-dir&gt;/data/shards/&lt;range&gt;/
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember to move view files before database files! If a view index
+is ahead of its database, the database will rebuild it from
+scratch.</p>
+</div>
+</div>
+<div class="section" id="set-the-target-node-to-true-maintenance-mode">
+<span id="cluster-sharding-mm"></span><h3>4.4.3.2. Set the target node to <code class="docutils literal"><span class="pre">true</span></code> maintenance mode<a class="headerlink" href="#set-the-target-node-to-true-maintenance-mode" title="Permalink to this headline">¶</a></h3>
+<p>Before telling CouchDB about these new shards on the node, the node
+must be put into maintenance mode. Maintenance mode instructs CouchDB to
+return a <code class="docutils literal"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code> response on the <code class="docutils literal"><span class="pre">/_up</span></code> endpoint, and
+ensures it does not participate in normal interactive clustered requests
+for its shards. A properly configured load balancer that uses <code class="docutils literal"><span class="pre">GET</span>
+<span class="pre">/_up</span></code> to check the health of nodes will detect this 404 and remove the
+node from circulation, preventing requests from being sent to that node.
+For example, to configure HAProxy to use the <code class="docutils literal"><span class="pre">/_up</span></code> endpoint, use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">http</span><span class="o">-</span><span class="n">check</span> <span class="n">disable</span><span class="o">-</span><span class="n">on</span><span class="o">-</span><span class="mi">404</span>
+<span class="n">option</span> <span class="n">httpchk</span> <span class="n">GET</span> <span class="o">/</span><span class="n">_up</span>
+</pre></div>
+</div>
+<p>If you do not set maintenance mode, or the load balancer ignores this
+maintenance mode status, after the next step is performed the cluster
+may return incorrect responses when consulting the node in question. You
+don’t want this! In the next steps, we will ensure that this shard is
+up-to-date before allowing it to participate in end-user requests.</p>
+<p>To enable maintenance mode:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -X PUT -H <span class="s2">&quot;Content-type: application/json&quot;</span> <span class="se">\</span>
+    <span class="nv">$COUCH_URL</span>:5984/_node/&lt;nodename&gt;/_config/couchdb/maintenance_mode <span class="se">\</span>
+    -d <span class="s2">&quot;\&quot;true\&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Then, verify that the node is in maintenance mode by performing a <code class="docutils literal"><span class="pre">GET</span>
+<span class="pre">/_up</span></code> on that node’s individual endpoint:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -v <span class="nv">$COUCH_URL</span>/_up
+…
+&lt; HTTP/1.1 <span class="m">404</span> Object Not Found
+…
+<span class="o">{</span><span class="s2">&quot;status&quot;</span>:<span class="s2">&quot;maintenance_mode&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>Finally, check that your load balancer has removed the node from the
+pool of available backend nodes.</p>
+</div>
+<div class="section" id="updating-cluster-metadata-to-reflect-the-new-target-shard-s">
+<span id="cluster-sharding-add-shard"></span><h3>4.4.3.3. Updating cluster metadata to reflect the new target shard(s)<a class="headerlink" href="#updating-cluster-metadata-to-reflect-the-new-target-shard-s" title="Permalink to this headline">¶</a></h3>
+<p>Now we need to tell CouchDB that the target node (which must already be
+<a class="reference internal" href="nodes.html#cluster-nodes-add"><span class="std std-ref">joined to the cluster</span></a>) should be hosting
+shard replicas for a given database.</p>
+<p>To update the cluster metadata, use the special <code class="docutils literal"><span class="pre">/_dbs</span></code> database,
+which is an internal CouchDB database that maps databases to shards and
+nodes. This database is replicated between nodes. It is accessible only
+via a node-local port, usually at port 5986. By default, this port is
+only available on the localhost interface for security purposes.</p>
+<p>First, retrieve the database’s current metadata:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl http://localhost:5986/_dbs/<span class="o">{</span>name<span class="o">}</span>
+<span class="o">{</span>
+  <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;{name}&quot;</span>,
+  <span class="s2">&quot;_rev&quot;</span>: <span class="s2">&quot;1-e13fb7e79af3b3107ed62925058bfa3a&quot;</span>,
+  <span class="s2">&quot;shard_suffix&quot;</span>: <span class="o">[</span>46, 49, 53, 51, 48, 50, 51, 50, 53, 50, 54<span class="o">]</span>,
+  <span class="s2">&quot;changelog&quot;</span>: <span class="o">[</span>
+    <span class="o">[</span><span class="s2">&quot;add&quot;</span>, <span class="s2">&quot;00000000-1fffffff&quot;</span>, <span class="s2">&quot;node1@xxx.xxx.xxx.xxx&quot;</span><span class="o">]</span>,
+    <span class="o">[</span><span class="s2">&quot;add&quot;</span>, <span class="s2">&quot;00000000-1fffffff&quot;</span>, <span class="s2">&quot;node2@xxx.xxx.xxx.xxx&quot;</span><span class="o">]</span>,
+    <span class="o">[</span><span class="s2">&quot;add&quot;</span>, <span class="s2">&quot;00000000-1fffffff&quot;</span>, <span class="s2">&quot;node3@xxx.xxx.xxx.xxx&quot;</span><span class="o">]</span>,
+    …
+  <span class="o">]</span>,
+  <span class="s2">&quot;by_node&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;node1@xxx.xxx.xxx.xxx&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;00000000-1fffffff&quot;</span>,
+      …
+    <span class="o">]</span>,
+    …
+  <span class="o">}</span>,
+  <span class="s2">&quot;by_range&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;00000000-1fffffff&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node1@xxx.xxx.xxx.xxx&quot;</span>,
+      <span class="s2">&quot;node2@xxx.xxx.xxx.xxx&quot;</span>,
+      <span class="s2">&quot;node3@xxx.xxx.xxx.xxx&quot;</span>
+    <span class="o">]</span>,
+    …
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Here is a brief anatomy of that document:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">_id</span></code>: The name of the database.</li>
+<li><code class="docutils literal"><span class="pre">_rev</span></code>: The current revision of the metadata.</li>
+<li><code class="docutils literal"><span class="pre">shard_suffix</span></code>: A timestamp of the database’s creation, marked as
+seconds after the Unix epoch mapped to the codepoints for ASCII
+numerals.</li>
+<li><code class="docutils literal"><span class="pre">changelog</span></code>: History of the database’s shards.</li>
+<li><code class="docutils literal"><span class="pre">by_node</span></code>: List of shards on each node.</li>
+<li><code class="docutils literal"><span class="pre">by_range</span></code>: On which nodes each shard is.</li>
+</ul>
+<p>To reflect the shard move in the metadata, there are three steps:</p>
+<ol class="arabic simple">
+<li>Add appropriate changelog entries.</li>
+<li>Update the <code class="docutils literal"><span class="pre">by_node</span></code> entries.</li>
+<li>Update the <code class="docutils literal"><span class="pre">by_range</span></code> entries.</li>
+</ol>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Be very careful! Mistakes during this process can
+irreparably corrupt the cluster!</p>
+</div>
+<p>As of this writing, this process must be done manually.</p>
+<p>To add a shard to a node, add entries like this to the database
+metadata’s <code class="docutils literal"><span class="pre">changelog</span></code> attribute:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;range&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;node-name&gt;&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">&lt;range&gt;</span></code> is the specific shard range for the shard. The <code class="docutils literal"><span class="pre">&lt;node-</span>
+<span class="pre">name&gt;</span></code> should match the name and address of the node as displayed in
+<code class="docutils literal"><span class="pre">GET</span> <span class="pre">/_membership</span></code> on the cluster.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When removing a shard from a node, specify <code class="docutils literal"><span class="pre">remove</span></code> instead of <code class="docutils literal"><span class="pre">add</span></code>.</p>
+</div>
+<p>Once you have figured out the new changelog entries, you will need to
+update the <code class="docutils literal"><span class="pre">by_node</span></code> and <code class="docutils literal"><span class="pre">by_range</span></code> to reflect who is storing what
+shards. The data in the changelog entries and these attributes must
+match. If they do not, the database may become corrupted.</p>
+<p>Continuing our example, here is an updated version of the metadata above
+that adds shards to an additional node called <code class="docutils literal"><span class="pre">node4</span></code>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;{name}&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;_rev&quot;</span><span class="o">:</span> <span class="s2">&quot;1-e13fb7e79af3b3107ed62925058bfa3a&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;shard_suffix&quot;</span><span class="o">:</span> <span class="p">[</span><span class="mi">46</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">54</span><span class="p">],</span>
+  <span class="s2">&quot;changelog&quot;</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;00000000-1fffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;node1@xxx.xxx.xxx.xxx&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;00000000-1fffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;node2@xxx.xxx.xxx.xxx&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;00000000-1fffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;node3@xxx.xxx.xxx.xxx&quot;</span><span class="p">],</span>
+    <span class="p">...</span>
+    <span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;00000000-1fffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;node4@xxx.xxx.xxx.xxx&quot;</span><span class="p">]</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;by_node&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;node1@xxx.xxx.xxx.xxx&quot;</span><span class="o">:</span> <span class="p">[</span>
+      <span class="s2">&quot;00000000-1fffffff&quot;</span><span class="p">,</span>
+      <span class="p">...</span>
+    <span class="p">],</span>
+    <span class="p">...</span>
+    <span class="s2">&quot;node4@xxx.xxx.xxx.xxx&quot;</span><span class="o">:</span> <span class="p">[</span>
+      <span class="s2">&quot;00000000-1fffffff&quot;</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;by_range&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;00000000-1fffffff&quot;</span><span class="o">:</span> <span class="p">[</span>
+      <span class="s2">&quot;node1@xxx.xxx.xxx.xxx&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;node2@xxx.xxx.xxx.xxx&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;node3@xxx.xxx.xxx.xxx&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;node4@xxx.xxx.xxx.xxx&quot;</span>
+    <span class="p">],</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now you can <code class="docutils literal"><span class="pre">PUT</span></code> this new metadata:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -X PUT http://localhost:5986/_dbs/<span class="o">{</span>name<span class="o">}</span> -d <span class="s1">&#39;{...}&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="forcing-synchronization-of-the-shard-s">
+<span id="cluster-sharding-sync"></span><h3>4.4.3.4. Forcing synchronization of the shard(s)<a class="headerlink" href="#forcing-synchronization-of-the-shard-s" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.4.0.</span></p>
+</div>
+<p>Whether you pre-copied shards to your new node or not, you can force
+CouchDB to synchronize all replicas of all shards in a database with the
+<a class="reference internal" href="../api/database/shard.html#api-db-sync-shards"><span class="std std-ref">/db/_sync_shards</span></a> endpoint:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -X POST <span class="nv">$COUCH_URL</span>:5984/<span class="o">{</span>dbname<span class="o">}</span>/_sync_shards
+<span class="o">{</span><span class="s2">&quot;ok&quot;</span>:true<span class="o">}</span>
+</pre></div>
+</div>
+<p>This starts the synchronization process. Note that this will put
+additional load onto your cluster, which may affect performance.</p>
+<p>It is also possible to force synchronization on a per-shard basis by
+writing to a document that is stored within that shard.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Admins may want to bump their <code class="docutils literal"><span class="pre">[mem3]</span> <span class="pre">sync_concurrency</span></code> value to a
+larger figure for the duration of the shards sync.</p>
+</div>
+</div>
+<div class="section" id="monitor-internal-replication-to-ensure-up-to-date-shard-s">
+<span id="cluster-sharding-verify"></span><h3>4.4.3.5. Monitor internal replication to ensure up-to-date shard(s)<a class="headerlink" href="#monitor-internal-replication-to-ensure-up-to-date-shard-s" title="Permalink to this headline">¶</a></h3>
+<p>After you complete the previous step, CouchDB will have started
+synchronizing the shards. You can observe this happening by monitoring
+the <code class="docutils literal"><span class="pre">/_node/&lt;nodename&gt;/_system</span></code> endpoint, which includes the
+<code class="docutils literal"><span class="pre">internal_replication_jobs</span></code> metric.</p>
+<p>Once this metric has returned to the baseline from before you started
+the shard sync, or is <code class="docutils literal"><span class="pre">0</span></code>, the shard replica is ready to serve data
+and we can bring the node out of maintenance mode.</p>
+</div>
+<div class="section" id="clear-the-target-node-s-maintenance-mode">
+<span id="cluster-sharding-mm-2"></span><h3>4.4.3.6. Clear the target node’s maintenance mode<a class="headerlink" href="#clear-the-target-node-s-maintenance-mode" title="Permalink to this headline">¶</a></h3>
+<p>You can now let the node start servicing data requests by
+putting <code class="docutils literal"><span class="pre">&quot;false&quot;</span></code> to the maintenance mode configuration endpoint, just
+as in step 2.</p>
+<p>Verify that the node is not in maintenance mode by performing a <code class="docutils literal"><span class="pre">GET</span>
+<span class="pre">/_up</span></code> on that node’s individual endpoint.</p>
+<p>Finally, check that your load balancer has returned the node to the pool
+of available backend nodes.</p>
+</div>
+<div class="section" id="update-cluster-metadata-again-to-remove-the-source-shard">
+<span id="cluster-sharding-remove-shard"></span><h3>4.4.3.7. Update cluster metadata again to remove the source shard<a class="headerlink" href="#update-cluster-metadata-again-to-remove-the-source-shard" title="Permalink to this headline">¶</a></h3>
+<p>Now, remove the source shard from the shard map the same way that you
+added the new target shard to the shard map in step 2. Be sure to add
+the <code class="docutils literal"><span class="pre">[&quot;remove&quot;,</span> <span class="pre">&lt;range&gt;,</span> <span class="pre">&lt;source-shard&gt;]</span></code> entry to the end of the
+changelog as well as modifying both the <code class="docutils literal"><span class="pre">by_node</span></code> and <code class="docutils literal"><span class="pre">by_range</span></code> sections of
+the database metadata document.</p>
+</div>
+<div class="section" id="remove-the-shard-and-secondary-index-files-from-the-source-node">
+<span id="cluster-sharding-remove-shard-files"></span><h3>4.4.3.8. Remove the shard and secondary index files from the source node<a class="headerlink" href="#remove-the-shard-and-secondary-index-files-from-the-source-node" title="Permalink to this headline">¶</a></h3>
+<p>Finally, you can remove the source shard replica by deleting its file from the
+command line on the source host, along with any view shard replicas:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>rm &lt;couch-dir&gt;/data/shards/&lt;range&gt;/&lt;dbname&gt;.&lt;datecode&gt;.couch
+<span class="nv">$ </span>rm -r &lt;couch-dir&gt;/data/.shards/&lt;range&gt;/&lt;dbname&gt;.&lt;datecode&gt;*
+</pre></div>
+</div>
+<p>Congratulations! You have moved a database shard replica. By adding and removing
+database shard replicas in this way, you can change the cluster’s shard layout,
+also known as a shard map.</p>
+</div>
+</div>
+<div class="section" id="specifying-database-placement">
+<h2>4.4.4. Specifying database placement<a class="headerlink" href="#specifying-database-placement" title="Permalink to this headline">¶</a></h2>
+<p>You can configure CouchDB to put shard replicas on certain nodes at
+database creation time using placement rules.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Use of the <code class="docutils literal"><span class="pre">placement</span></code> option will <strong>override</strong> the <code class="docutils literal"><span class="pre">n</span></code> option,
+both in the <code class="docutils literal"><span class="pre">.ini</span></code> file as well as when specified in a <code class="docutils literal"><span class="pre">URL</span></code>.</p>
+</div>
+<p>First, each node must be labeled with a zone attribute. This defines
+which zone each node is in. You do this by editing the node’s document
+in the <code class="docutils literal"><span class="pre">/_nodes</span></code> database, which is accessed through the node-local
+port. Add a key value pair of the form:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;zone&quot;</span><span class="p">:</span> <span class="s">&quot;{zone-name}&quot;</span>
+</pre></div>
+</div>
+<p>Do this for all of the nodes in your cluster. For example:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -X PUT http://localhost:5986/_nodes/&lt;node-name&gt; <span class="se">\</span>
+    -d <span class="s1">&#39;{ \</span>
+<span class="s1">        &quot;_id&quot;: &quot;&lt;node-name&gt;&quot;,</span>
+<span class="s1">        &quot;_rev&quot;: &quot;&lt;rev&gt;&quot;,</span>
+<span class="s1">        &quot;zone&quot;: &quot;&lt;zone-name&gt;&quot;</span>
+<span class="s1">        }&#39;</span>
+</pre></div>
+</div>
+<p>In the local config file (<code class="docutils literal"><span class="pre">local.ini</span></code>) of each node, define a
+consistent cluster-wide setting like:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="p">[</span><span class="n">cluster</span><span class="p">]</span>
+<span class="n">placement</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">zone</span><span class="o">-</span><span class="n">name</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="o">&lt;</span><span class="n">zone</span><span class="o">-</span><span class="n">name</span><span class="o">-</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>In this example, CouchDB will ensure that two replicas for a shard will
+be hosted on nodes with the zone attribute set to <code class="docutils literal"><span class="pre">&lt;zone-name-1&gt;</span></code> and
+one replica will be hosted on a new with the zone attribute set to
+<code class="docutils literal"><span class="pre">&lt;zone-name-2&gt;</span></code>.</p>
+<p>This approach is flexible, since you can also specify zones on a per-
+database basis by specifying the placement setting as a query parameter
+when the database is created, using the same syntax as the ini file:</p>
+<div class="highlight-bash"><div class="highlight"><pre>curl -X PUT <span class="nv">$COUCH_URL</span>:5984/&lt;dbname&gt;?zone<span class="o">=</span>&lt;zone&gt;
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">placement</span></code> argument may also be specified. Note that this <em>will</em>
+override the logic that determines the number of created replicas!</p>
+<p>Note that you can also use this system to ensure certain nodes in the
+cluster do not host any replicas for newly created databases, by giving
+them a zone attribute that does not appear in the <code class="docutils literal"><span class="pre">[cluster]</span></code>
+placement string.</p>
+</div>
+<div class="section" id="resharding-a-database-to-a-new-q-value">
+<h2>4.4.5. Resharding a database to a new q value<a class="headerlink" href="#resharding-a-database-to-a-new-q-value" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">q</span></code> value for a database can only be set when the database is
+created, precluding live resharding. Instead, to reshard a database, it
+must be regenerated. Here are the steps:</p>
+<ol class="arabic simple">
+<li>Create a temporary database with the desired shard settings, by
+specifying the q value as a query parameter during the PUT
+operation.</li>
+<li>Stop clients accessing the database.</li>
+<li>Replicate the primary database to the temporary one. Multiple
+replications may be required if the primary database is under
+active use.</li>
+<li>Delete the primary database. <strong>Make sure nobody is using it!</strong></li>
+<li>Recreate the primary database with the desired shard settings.</li>
+<li>Clients can now access the database again.</li>
+<li>Replicate the temporary back to the primary.</li>
+<li>Delete the temporary database.</li>
+</ol>
+<p>Once all steps have completed, the database can be used again. The
+cluster will create and distribute its shards according to placement
+rules automatically.</p>
+<p>Downtime can be avoided in production if the client application(s) can
+be instructed to use the new database instead of the old one, and a cut-
+over is performed during a very brief outage window.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="purging.html" class="btn btn-neutral float-right" title="4.5. Clustered Purge" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="databases.html" class="btn btn-neutral" title="4.3. Database Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

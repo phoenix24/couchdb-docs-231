@@ -1,0 +1,2491 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.2.1. / &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/api/server/common.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../../about.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../../index.html"/>
+        <link rel="up" title="1.2. Server" href="index.html"/>
+        <link rel="next" title="1.2.18. Authentication" href="authn.html"/>
+        <link rel="prev" title="1.2. Server" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../basics.html">1.1. API Basics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.2. Server</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.2.1. <code class="docutils literal"><span class="pre">/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#active-tasks">1.2.2. <code class="docutils literal"><span class="pre">/_active_tasks</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#all-dbs">1.2.3. <code class="docutils literal"><span class="pre">/_all_dbs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dbs-info">1.2.4. <code class="docutils literal"><span class="pre">/_dbs_info</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cluster-setup">1.2.5. <code class="docutils literal"><span class="pre">/_cluster_setup</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-updates">1.2.6. <code class="docutils literal"><span class="pre">/_db_updates</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#membership">1.2.7. <code class="docutils literal"><span class="pre">/_membership</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#replicate">1.2.8. <code class="docutils literal"><span class="pre">/_replicate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#replication-operation">1.2.8.1. Replication Operation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specifying-the-source-and-target-database">1.2.8.2. Specifying the Source and Target Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#single-replication">1.2.8.3. Single Replication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#continuous-replication">1.2.8.4. Continuous Replication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canceling-continuous-replication">1.2.8.5. Canceling Continuous Replication</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scheduler-jobs">1.2.9. <code class="docutils literal"><span class="pre">/_scheduler/jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scheduler-docs">1.2.10. <code class="docutils literal"><span class="pre">/_scheduler/docs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-node-name-stats">1.2.11. <code class="docutils literal"><span class="pre">/_node/{node-name}/_stats</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-node-name-system">1.2.12. <code class="docutils literal"><span class="pre">/_node/{node-name}/_system</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-node-name-restart">1.2.13. <code class="docutils literal"><span class="pre">/_node/{node-name}/_restart</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils">1.2.14. <code class="docutils literal"><span class="pre">/_utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#up">1.2.15. <code class="docutils literal"><span class="pre">/_up</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uuids">1.2.16. <code class="docutils literal"><span class="pre">/_uuids</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#favicon-ico">1.2.17. <code class="docutils literal"><span class="pre">/favicon.ico</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="authn.html">1.2.18. Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html">1.2.19. Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">1.3. Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../document/index.html">1.4. Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ddoc/index.html">1.5. Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local.html">1.6. Local (non-replicating) Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query-server/index.html">3. Query Server</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../../http-api.html">API Quick Reference</a></li>
+<li><a href="../../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">1. API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">1.2. Server</a> &raquo;</li>
+        
+      <li>1.2.1. <code class="docutils literal"><span class="pre">/</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/api/server/common.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-server-root">
+<span id="id1"></span><h1>1.2.1. <code class="docutils literal"><span class="pre">/</span></code><a class="headerlink" href="#api-server-root" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--">
+<code class="descname">GET </code><code class="descname">/</code><a class="headerlink" href="#get--" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessing the root of a CouchDB instance returns meta information about the
+instance. The response is a JSON structure containing information about the
+server, including a welcome message and the version of the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">179</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 10 Aug 2013 06:33:33 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;couchdb&quot;</span><span class="p">:</span> <span class="s2">&quot;Welcome&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;85fb71bf700c17267fef77535820e371&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;The Apache Software Foundation&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.3.1&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.3.1&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="active-tasks">
+<span id="api-server-active-tasks"></span><h1>1.2.2. <code class="docutils literal"><span class="pre">/_active_tasks</span></code><a class="headerlink" href="#active-tasks" title="Permalink to this headline">¶</a></h1>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.1.0: </span>Because of how the scheduling replicator works, continuous replication jobs could be periodically stopped and then started later. When they are not running they will not appear in the <code class="docutils literal"><span class="pre">_active_tasks</span></code> endpoint</p>
+</div>
+<dl class="get">
+<dt id="get--_active_tasks">
+<code class="descname">GET </code><code class="descname">/_active_tasks</code><a class="headerlink" href="#get--_active_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of running tasks, including the task type, name, status
+and process ID. The result is a JSON array of the currently running tasks,
+with each task being described with a single object. Depending on operation
+type set of response object fields might be different.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>changes_done</strong> (<em>number</em>) – Processed changes</li>
+<li><strong>database</strong> (<em>string</em>) – Source database</li>
+<li><strong>pid</strong> (<em>string</em>) – Process ID</li>
+<li><strong>progress</strong> (<em>number</em>) – Current percentage progress</li>
+<li><strong>started_on</strong> (<em>number</em>) – Task start time as unix timestamp</li>
+<li><strong>status</strong> (<em>string</em>) – Task status message</li>
+<li><strong>task</strong> (<em>string</em>) – Task name</li>
+<li><strong>total_changes</strong> (<em>number</em>) – Total changes to process</li>
+<li><strong>type</strong> (<em>string</em>) – Operation Type</li>
+<li><strong>updated_on</strong> (<em>number</em>) – Unix timestamp of last operation update</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – CouchDB Server Administrator privileges required</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_active_tasks</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">1690</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 10 Aug 2013 06:37:31 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;changes_done&quot;</span><span class="p">:</span> <span class="mi">64438</span><span class="p">,</span>
+        <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;mailbox&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;0.12986.1&gt;&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;progress&quot;</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span>
+        <span class="nt">&quot;started_on&quot;</span><span class="p">:</span> <span class="mi">1376116576</span><span class="p">,</span>
+        <span class="nt">&quot;total_changes&quot;</span><span class="p">:</span> <span class="mi">76215</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;database_compaction&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;updated_on&quot;</span><span class="p">:</span> <span class="mi">1376116619</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;changes_done&quot;</span><span class="p">:</span> <span class="mi">14443</span><span class="p">,</span>
+        <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;mailbox&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;design_document&quot;</span><span class="p">:</span> <span class="s2">&quot;c9753817b3ba7c674d92361f24f59b9f&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;0.10461.3&gt;&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;progress&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+        <span class="nt">&quot;started_on&quot;</span><span class="p">:</span> <span class="mi">1376116621</span><span class="p">,</span>
+        <span class="nt">&quot;total_changes&quot;</span><span class="p">:</span> <span class="mi">76215</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;indexer&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;updated_on&quot;</span><span class="p">:</span> <span class="mi">1376116650</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;changes_done&quot;</span><span class="p">:</span> <span class="mi">5454</span><span class="p">,</span>
+        <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;mailbox&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;design_document&quot;</span><span class="p">:</span> <span class="s2">&quot;_design/meta&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;0.6838.4&gt;&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;progress&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="nt">&quot;started_on&quot;</span><span class="p">:</span> <span class="mi">1376116632</span><span class="p">,</span>
+        <span class="nt">&quot;total_changes&quot;</span><span class="p">:</span> <span class="mi">76215</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;indexer&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;updated_on&quot;</span><span class="p">:</span> <span class="mi">1376116651</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;checkpointed_source_seq&quot;</span><span class="p">:</span> <span class="mi">68585</span><span class="p">,</span>
+        <span class="nt">&quot;continuous&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&quot;doc_id&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="nt">&quot;doc_write_failures&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nt">&quot;docs_read&quot;</span><span class="p">:</span> <span class="mi">4524</span><span class="p">,</span>
+        <span class="nt">&quot;docs_written&quot;</span><span class="p">:</span> <span class="mi">4524</span><span class="p">,</span>
+        <span class="nt">&quot;missing_revisions_found&quot;</span><span class="p">:</span> <span class="mi">4524</span><span class="p">,</span>
+        <span class="nt">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;0.1538.5&gt;&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;progress&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span>
+        <span class="nt">&quot;replication_id&quot;</span><span class="p">:</span> <span class="s2">&quot;9bc1727d74d49d9e157e260bb8bbd1d5&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;revisions_checked&quot;</span><span class="p">:</span> <span class="mi">4524</span><span class="p">,</span>
+        <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;mailbox&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;source_seq&quot;</span><span class="p">:</span> <span class="mi">154419</span><span class="p">,</span>
+        <span class="nt">&quot;started_on&quot;</span><span class="p">:</span> <span class="mi">1376116644</span><span class="p">,</span>
+        <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;http://mailsrv:5984/mailbox&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;replication&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;updated_on&quot;</span><span class="p">:</span> <span class="mi">1376116651</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="all-dbs">
+<span id="api-server-all-dbs"></span><h1>1.2.3. <code class="docutils literal"><span class="pre">/_all_dbs</span></code><a class="headerlink" href="#all-dbs" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--_all_dbs">
+<code class="descname">GET </code><code class="descname">/_all_dbs</code><a class="headerlink" href="#get--_all_dbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all the databases in the CouchDB instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>descending</strong> (<em>boolean</em>) – Return the databases in descending order by key.
+Default is <code class="docutils literal"><span class="pre">false</span></code>.</li>
+<li><strong>endkey</strong> (<em>json</em>) – Stop returning databases when the specified key is
+reached.</li>
+<li><strong>end_key</strong> (<em>json</em>) – Alias for <cite>endkey</cite> param</li>
+<li><strong>limit</strong> (<em>number</em>) – Limit the number of the returned databases to the
+specified number.</li>
+<li><strong>skip</strong> (<em>number</em>) – Skip this number of databases before starting to return
+the results. Default is <code class="docutils literal"><span class="pre">0</span></code>.</li>
+<li><strong>startkey</strong> (<em>json</em>) – Return databases starting with the specified key.</li>
+<li><strong>start_key</strong> (<em>json</em>) – Alias for <cite>startkey</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_all_dbs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">52</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 10 Aug 2013 06:57:48 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">[</span>
+   <span class="s2">&quot;_users&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;contacts&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;docs&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;invoices&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;locations&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="dbs-info">
+<span id="api-server-dbs-info"></span><h1>1.2.4. <code class="docutils literal"><span class="pre">/_dbs_info</span></code><a class="headerlink" href="#dbs-info" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.2.</span></p>
+</div>
+<dl class="post">
+<dt id="post--_dbs_info">
+<code class="descname">POST </code><code class="descname">/_dbs_info</code><a class="headerlink" href="#post--_dbs_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns information of a list of the specified databases in the CouchDB
+instance. This enables you to request information about multiple databases
+in a single request, in place of multiple <a class="reference internal" href="../database/common.html#get--db" title="GET /{db}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/{db}</span></code></a> requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>keys</strong> (<em>array</em>) – Array of database names to be requested</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Missing keys or exceeded keys in request</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/_dbs_info</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;animals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;plants&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 20 Dec 2017 06:57:48 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;animals&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;db_name&quot;</span><span class="p">:</span> <span class="s2">&quot;animals&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;update_seq&quot;</span><span class="p">:</span> <span class="s2">&quot;52232&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;sizes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;file&quot;</span><span class="p">:</span> <span class="mi">1178613587</span><span class="p">,</span>
+        <span class="nt">&quot;external&quot;</span><span class="p">:</span> <span class="mi">1713103872</span><span class="p">,</span>
+        <span class="nt">&quot;active&quot;</span><span class="p">:</span> <span class="mi">1162451555</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;purge_seq&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;other&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;data_size&quot;</span><span class="p">:</span> <span class="mi">1713103872</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;doc_del_count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;doc_count&quot;</span><span class="p">:</span> <span class="mi">52224</span><span class="p">,</span>
+      <span class="nt">&quot;disk_size&quot;</span><span class="p">:</span> <span class="mi">1178613587</span><span class="p">,</span>
+      <span class="nt">&quot;disk_format_version&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+      <span class="nt">&quot;data_size&quot;</span><span class="p">:</span> <span class="mi">1162451555</span><span class="p">,</span>
+      <span class="nt">&quot;compact_running&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="nt">&quot;cluster&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;q&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nt">&quot;r&quot;</span><span class="p">:</span> <span class="mi">2</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;instance_start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;plants&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;db_name&quot;</span><span class="p">:</span> <span class="s2">&quot;plants&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;update_seq&quot;</span><span class="p">:</span> <span class="s2">&quot;303&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;sizes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;file&quot;</span><span class="p">:</span> <span class="mi">3872387</span><span class="p">,</span>
+        <span class="nt">&quot;external&quot;</span><span class="p">:</span> <span class="mi">2339</span><span class="p">,</span>
+        <span class="nt">&quot;active&quot;</span><span class="p">:</span> <span class="mi">67475</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;purge_seq&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;other&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;data_size&quot;</span><span class="p">:</span> <span class="mi">2339</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;doc_del_count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;doc_count&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+      <span class="nt">&quot;disk_size&quot;</span><span class="p">:</span> <span class="mi">3872387</span><span class="p">,</span>
+      <span class="nt">&quot;disk_format_version&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+      <span class="nt">&quot;data_size&quot;</span><span class="p">:</span> <span class="mi">67475</span><span class="p">,</span>
+      <span class="nt">&quot;compact_running&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="nt">&quot;cluster&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;q&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nt">&quot;r&quot;</span><span class="p">:</span> <span class="mi">2</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;instance_start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The supported number of the specified databases in the list can be limited
+by modifying the <cite>max_db_number_for_dbs_info_req</cite> entry in configuration
+file. The default limit is 100.</p>
+</div>
+</div>
+<div class="section" id="cluster-setup">
+<span id="api-server-cluster-setup"></span><h1>1.2.5. <code class="docutils literal"><span class="pre">/_cluster_setup</span></code><a class="headerlink" href="#cluster-setup" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
+<dl class="get">
+<dt id="get--_cluster_setup">
+<code class="descname">GET </code><code class="descname">/_cluster_setup</code><a class="headerlink" href="#get--_cluster_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the status of the node or cluster, per the cluster setup wizard.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>ensure_dbs_exist</strong> (<em>array</em>) – List of system databases to ensure exist
+on the node/cluster. Defaults to
+<code class="docutils literal"><span class="pre">[&quot;_users&quot;,&quot;_replicator&quot;,&quot;_global_changes&quot;]</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>state</strong> (<em>string</em>) – Current <code class="docutils literal"><span class="pre">state</span></code> of the node and/or cluster (see
+below)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal"><span class="pre">state</span></code> returned indicates the current node or cluster state, and
+is one of the following:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">cluster_disabled</span></code>: The current node is completely unconfigured.</li>
+<li><code class="docutils literal"><span class="pre">single_node_disabled</span></code>: The current node is configured as a single
+(standalone) node (<code class="docutils literal"><span class="pre">[cluster]</span> <span class="pre">n=1</span></code>), but either does not have a
+server-level admin user defined, or does not have the standard system
+databases created. If the <code class="docutils literal"><span class="pre">ensure_dbs_exist</span></code> query parameter is
+specified, the list of databases provided overrides the default list
+of standard system databases.</li>
+<li><code class="docutils literal"><span class="pre">single_node_enabled</span></code>: The current node is configured as a single
+(standalone) node, has a server-level admin user defined, and has
+the <code class="docutils literal"><span class="pre">ensure_dbs_exist</span></code> list (explicit or default) of databases
+created.</li>
+<li><code class="docutils literal"><span class="pre">cluster_enabled</span></code>: The current node has <code class="docutils literal"><span class="pre">[cluster]</span> <span class="pre">n</span></code> &gt; 1, is not
+bound to <code class="docutils literal"><span class="pre">127.0.0.1</span></code> and has a server-level admin user defined.
+However, the full set of standard system databases have not been
+created yet. If the <code class="docutils literal"><span class="pre">ensure_dbs_exist</span></code> query parameter is
+specified, the list of databases provided overrides the default list
+of standard system databases.</li>
+<li><code class="docutils literal"><span class="pre">cluster_finished</span></code>: The current node has <code class="docutils literal"><span class="pre">[cluster]</span> <span class="pre">n</span></code> &gt; 1, is not
+bound to <code class="docutils literal"><span class="pre">127.0.0.1</span></code>, has a server-level admin user defined <em>and</em>
+has the <code class="docutils literal"><span class="pre">ensure_dbs_exist</span></code> list (explicit or default) of databases
+created.</li>
+</ul>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_cluster_setup</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">X-CouchDB-Body-Time</span><span class="o">:</span> <span class="l">0</span>
+<span class="na">X-Couch-Request-ID</span><span class="o">:</span> <span class="l">5c058bdd37</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB/2.1.0-7f17678 (Erlang OTP/17)</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sun, 30 Jul 2017 06:33:18 GMT</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">29</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+
+<span class="p">{</span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="s2">&quot;cluster_enabled&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="post">
+<dt id="post--_cluster_setup">
+<code class="descname">POST </code><code class="descname">/_cluster_setup</code><a class="headerlink" href="#post--_cluster_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure a node as a single (standalone) node, as part of a cluster,
+or finalise a cluster.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <em class="mimetype">application/json</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><strong>action</strong> (<em>string</em>) – <ul>
+<li><strong>enable_single_node</strong>: Configure the current node
+as a single, standalone CouchDB server.</li>
+<li><strong>enable_cluster</strong>: Configure the local or remote
+node as one node, preparing it to be joined to a
+new CouchDB cluster.</li>
+<li><strong>add_node</strong>: Add the specified remote node to
+this cluster’s list of nodes, joining it to the
+cluster.</li>
+<li><strong>finish_cluster</strong>: Finalise the cluster by
+creating the standard system databases.</li>
+</ul>
+</li>
+<li><strong>bind_address</strong> (<em>string</em>) – The IP address to which to bind the current
+node. The special value <code class="docutils literal"><span class="pre">0.0.0.0</span></code> may be specified to bind to all
+interfaces on the host. (enable_cluster and enable_single_node only)</li>
+<li><strong>username</strong> (<em>string</em>) – The username of the server-level administrator to
+create. (enable_cluster and enable_single_node only), or the remote
+server’s administrator username (add_node)</li>
+<li><strong>password</strong> (<em>string</em>) – The password for the server-level administrator to
+create. (enable_cluster and enable_single_node only), or the remote
+server’s administrator username (add_node)</li>
+<li><strong>port</strong> (<em>number</em>) – The TCP port to which to bind this node
+(enable_cluster and enable_single_node only) or the TCP port to which
+to bind a remote node (add_node only).</li>
+<li><strong>node_count</strong> (<em>number</em>) – The total number of nodes to be joined into
+the cluster, including this one. Used to determine the value of the
+cluster’s <code class="docutils literal"><span class="pre">n</span></code>, up to a maximum of 3. (enable_cluster only)</li>
+<li><strong>remote_node</strong> (<em>string</em>) – The IP address of the remote node to setup as
+part of this cluster’s list of nodes. (enable_cluster only)</li>
+<li><strong>remote_current_user</strong> (<em>string</em>) – The username of the server-level
+administrator authorized on the remote node. (enable_cluster only)</li>
+<li><strong>remote_current_password</strong> (<em>string</em>) – The password of the server-level
+administrator authorized on the remote node. (enable_cluster only)</li>
+<li><strong>host</strong> (<em>string</em>) – The remote node IP of the node to add to the cluster.
+(add_node only)</li>
+<li><strong>ensure_dbs_exist</strong> (<em>array</em>) – List of system databases to ensure exist
+on the node/cluster. Defaults to
+<code class="docutils literal"><span class="pre">[&quot;_users&quot;,&quot;_replicator&quot;,&quot;_global_changes&quot;]</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><em>No example request/response included here. For a worked example, please
+see</em> <a class="reference internal" href="../../setup/cluster.html#cluster-setup-api"><span class="std std-ref">The Cluster Setup API</span></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="db-updates">
+<span id="api-server-db-updates"></span><h1>1.2.6. <code class="docutils literal"><span class="pre">/_db_updates</span></code><a class="headerlink" href="#db-updates" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 1.4.</span></p>
+</div>
+<dl class="get">
+<dt id="get--_db_updates">
+<code class="descname">GET </code><code class="descname">/_db_updates</code><a class="headerlink" href="#get--_db_updates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all database events in the CouchDB instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>feed</strong> (<em>string</em>) – <ul>
+<li><strong>normal</strong>: Returns all historical DB changes, then
+closes the connection. <em>Default.</em></li>
+<li><strong>longpoll</strong>: Closes the connection after the first
+event.</li>
+<li><strong>continuous</strong>: Send a line of JSON per event.
+Keeps the socket open until <code class="docutils literal"><span class="pre">timeout</span></code>.</li>
+<li><strong>eventsource</strong>: Like, <code class="docutils literal"><span class="pre">continuous</span></code>, but sends
+the events in <a class="reference external" href="http://dev.w3.org/html5/eventsource/">EventSource</a> format.</li>
+</ul>
+</li>
+<li><strong>timeout</strong> (<em>number</em>) – Number of seconds until CouchDB closes the
+connection. Default is <code class="docutils literal"><span class="pre">60</span></code>.</li>
+<li><strong>heartbeat</strong> (<em>number</em>) – Period in <em>milliseconds</em> after which an empty
+line is sent in the results. Only applicable for <code class="docutils literal"><span class="pre">longpoll</span></code>,
+<code class="docutils literal"><span class="pre">continuous</span></code>, and <code class="docutils literal"><span class="pre">eventsource</span></code> feeds. Overrides any timeout to
+keep the feed alive indefinitely. Default is <code class="docutils literal"><span class="pre">60000</span></code>. May be <code class="docutils literal"><span class="pre">true</span></code>
+to use default value.</li>
+<li><strong>since</strong> (<em>string</em>) – Return only updates since the specified sequence ID.
+May be the string <code class="docutils literal"><span class="pre">now</span></code> to begin showing only new updates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41">Transfer-Encoding</a> – <code class="docutils literal"><span class="pre">chunked</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>results</strong> (<em>array</em>) – An array of database events. For <code class="docutils literal"><span class="pre">longpoll</span></code> and
+<code class="docutils literal"><span class="pre">continuous</span></code> modes, the entire response is the contents of the
+<code class="docutils literal"><span class="pre">results</span></code> array.</li>
+<li><strong>last_seq</strong> (<em>string</em>) – The last sequence ID reported.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – CouchDB Server Administrator privileges required</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal"><span class="pre">results</span></code> field of database updates:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">JSON Object:</th><td class="field-body"><ul class="first last simple">
+<li><strong>db_name</strong> (<em>string</em>) – Database name.</li>
+<li><strong>type</strong> (<em>string</em>) – A database event is one of <code class="docutils literal"><span class="pre">created</span></code>, <code class="docutils literal"><span class="pre">updated</span></code>,
+<code class="docutils literal"><span class="pre">deleted</span></code>.</li>
+<li><strong>seq</strong> (<em>json</em>) – Update sequence of the event.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_db_updates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 18 Mar 2017 19:01:35 GMT</span>
+<span class="na">Etag</span><span class="o">:</span> <span class="l">&quot;C1KU98Y6H0LGM7EQQYL6VSL07&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB/2.0.0 (Erlang OTP/17)</span>
+<span class="na">Transfer-Encoding</span><span class="o">:</span> <span class="l">chunked</span>
+<span class="na">X-Couch-Request-ID</span><span class="o">:</span> <span class="l">ad87efc7ff</span>
+<span class="na">X-CouchDB-Body-Time</span><span class="o">:</span> <span class="l">0</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;results&quot;</span><span class="p">:[</span>
+        <span class="p">{</span><span class="nt">&quot;db_name&quot;</span><span class="p">:</span><span class="s2">&quot;mailbox&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;created&quot;</span><span class="p">,</span><span class="nt">&quot;seq&quot;</span><span class="p">:</span><span class="s2">&quot;1-g1AAAAFReJzLYWBg4MhgTmHgzcvPy09JdcjLz8gvLskBCjMlMiTJ____PyuDOZExFyjAnmJhkWaeaIquGIf2JAUgmWQPMiGRAZcaB5CaePxqEkBq6vGqyWMBkgwNQAqobD4h&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="nt">&quot;db_name&quot;</span><span class="p">:</span><span class="s2">&quot;mailbox&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;deleted&quot;</span><span class="p">,</span><span class="nt">&quot;seq&quot;</span><span class="p">:</span><span class="s2">&quot;2-g1AAAAFReJzLYWBg4MhgTmHgzcvPy09JdcjLz8gvLskBCjMlMiTJ____PyuDOZEpFyjAnmJhkWaeaIquGIf2JAUgmWQPMiGRAZcaB5CaePxqEkBq6vGqyWMBkgwNQAqobD4hdQsg6vYTUncAou4-IXUPIOpA7ssCAIFHa60&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;last_seq&quot;</span><span class="p">:</span> <span class="s2">&quot;2-g1AAAAFReJzLYWBg4MhgTmHgzcvPy09JdcjLz8gvLskBCjMlMiTJ____PyuDOZEpFyjAnmJhkWaeaIquGIf2JAUgmWQPMiGRAZcaB5CaePxqEkBq6vGqyWMBkgwNQAqobD4hdQsg6vYTUncAou4-IXUPIOpA7ssCAIFHa60&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="membership">
+<span id="api-server-membership"></span><h1>1.2.7. <code class="docutils literal"><span class="pre">/_membership</span></code><a class="headerlink" href="#membership" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
+<dl class="get">
+<dt id="get--_membership">
+<code class="descname">GET </code><code class="descname">/_membership</code><a class="headerlink" href="#get--_membership" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the nodes that are part of the cluster as <code class="docutils literal"><span class="pre">cluster_nodes</span></code>. The
+field <code class="docutils literal"><span class="pre">all_nodes</span></code> displays all nodes this node knows about, including the
+ones that are part of the cluster. The endpoint is useful when setting up a
+cluster, see <a class="reference internal" href="../../cluster/nodes.html#cluster-nodes"><span class="std std-ref">Node Management</span></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_membership</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 11 Jul 2015 07:02:41 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">142</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;all_nodes&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;node1@127.0.0.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;node2@127.0.0.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;node3@127.0.0.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;cluster_nodes&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;node1@127.0.0.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;node2@127.0.0.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;node3@127.0.0.1&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="replicate">
+<span id="api-server-replicate"></span><h1>1.2.8. <code class="docutils literal"><span class="pre">/_replicate</span></code><a class="headerlink" href="#replicate" title="Permalink to this headline">¶</a></h1>
+<dl class="post">
+<dt id="post--_replicate">
+<code class="descname">POST </code><code class="descname">/_replicate</code><a class="headerlink" href="#post--_replicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request, configure, or stop, a replication operation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <em class="mimetype">application/json</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>cancel</strong> (<em>boolean</em>) – Cancels the replication</li>
+<li><strong>continuous</strong> (<em>boolean</em>) – Configure the replication to be continuous</li>
+<li><strong>create_target</strong> (<em>boolean</em>) – Creates the target database.
+Required administrator’s privileges on target server.</li>
+<li><strong>doc_ids</strong> (<em>array</em>) – Array of document IDs to be synchronized</li>
+<li><strong>filter</strong> (<em>string</em>) – The name of a <a class="reference internal" href="../../ddocs/ddocs.html#filterfun"><span class="std std-ref">filter function</span></a>.</li>
+<li><strong>proxy</strong> (<em>string</em>) – Address of a proxy server through which replication
+should occur (protocol can be “http” or “socks5”)</li>
+<li><strong>source</strong> (<em>string/object</em>) – Source database name or URL or an object
+which contains the full URL of the source database with additional
+parameters like headers. Eg: ‘source_db_name’ or
+‘<a class="reference external" href="http://example.com/source_db_name">http://example.com/source_db_name</a>’ or
+{“url”:”url in here”, “headers”: {“header1”:”value1”, …}}</li>
+<li><strong>target</strong> (<em>string/object</em>) – Target database name or URL or an object
+which contains the full URL of the target database with additional
+parameters like headers. Eg: ‘target_db_name’ or
+‘<a class="reference external" href="http://example.com/target_db_name">http://example.com/target_db_name</a>’ or
+{“url”:”url in here”, “headers”: {“header1”:”value1”, …}}</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>history</strong> (<em>array</em>) – Replication history (see below)</li>
+<li><strong>ok</strong> (<em>boolean</em>) – Replication status</li>
+<li><strong>replication_id_version</strong> (<em>number</em>) – Replication protocol version</li>
+<li><strong>session_id</strong> (<em>string</em>) – Unique session ID</li>
+<li><strong>source_last_seq</strong> (<em>number</em>) – Last sequence number read from source
+database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Replication request successfully completed</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.3">202 Accepted</a> – Continuous replication request has been accepted</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Invalid JSON data</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – CouchDB Server Administrator privileges required</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Either the source or target DB is not found or attempt to
+cancel unknown replication task</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – JSON specification was invalid</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The specification of the replication request is controlled through the
+JSON content of the request. The JSON should be an object with the
+fields defining the source, target and other options.</p>
+<p>The <cite>Replication history</cite> is an array of objects with following structure:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">JSON Object:</th><td class="field-body"><ul class="first last simple">
+<li><strong>doc_write_failures</strong> (<em>number</em>) – Number of document write failures</li>
+<li><strong>docs_read</strong> (<em>number</em>) – Number of documents read</li>
+<li><strong>docs_written</strong> (<em>number</em>) – Number of documents written to target</li>
+<li><strong>end_last_seq</strong> (<em>number</em>) – Last sequence number in changes stream</li>
+<li><strong>end_time</strong> (<em>string</em>) – Date/Time replication operation completed in
+<span class="target" id="index-0"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc2822.html"><strong>RFC 2822</strong></a> format</li>
+<li><strong>missing_checked</strong> (<em>number</em>) – Number of missing documents checked</li>
+<li><strong>missing_found</strong> (<em>number</em>) – Number of missing documents found</li>
+<li><strong>recorded_seq</strong> (<em>number</em>) – Last recorded sequence number</li>
+<li><strong>session_id</strong> (<em>string</em>) – Session ID for this replication operation</li>
+<li><strong>start_last_seq</strong> (<em>number</em>) – First sequence number in changes stream</li>
+<li><strong>start_time</strong> (<em>string</em>) – Date/Time replication operation started in
+<span class="target" id="index-1"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc2822.html"><strong>RFC 2822</strong></a> format</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/_replicate</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">36</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;db_a&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;db_b&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">692</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sun, 11 Aug 2013 20:38:50 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;history&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;doc_write_failures&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;docs_read&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="nt">&quot;docs_written&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="nt">&quot;end_last_seq&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span>
+            <span class="nt">&quot;end_time&quot;</span><span class="p">:</span> <span class="s2">&quot;Sun, 11 Aug 2013 20:38:50 GMT&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;missing_checked&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="nt">&quot;missing_found&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="nt">&quot;recorded_seq&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span>
+            <span class="nt">&quot;session_id&quot;</span><span class="p">:</span> <span class="s2">&quot;142a35854a08e205c47174d91b1f9628&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_last_seq&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;Sun, 11 Aug 2013 20:38:50 GMT&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;doc_write_failures&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;docs_read&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;docs_written&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;end_last_seq&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;end_time&quot;</span><span class="p">:</span> <span class="s2">&quot;Sat, 10 Aug 2013 15:41:54 GMT&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;missing_checked&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;missing_found&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;recorded_seq&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;session_id&quot;</span><span class="p">:</span> <span class="s2">&quot;6314f35c51de3ac408af79d6ee0c1a09&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_last_seq&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;Sat, 10 Aug 2013 15:41:54 GMT&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;replication_id_version&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nt">&quot;session_id&quot;</span><span class="p">:</span> <span class="s2">&quot;142a35854a08e205c47174d91b1f9628&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;source_last_seq&quot;</span><span class="p">:</span> <span class="mi">28</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="replication-operation">
+<h2>1.2.8.1. Replication Operation<a class="headerlink" href="#replication-operation" title="Permalink to this headline">¶</a></h2>
+<p>The aim of the replication is that at the end of the process, all active
+documents on the source database are also in the destination database and all
+documents that were deleted in the source databases are also deleted (if they
+exist) on the destination database.</p>
+<p>Replication can be described as either push or pull replication:</p>
+<ul>
+<li><p class="first"><em>Pull replication</em> is where the <code class="docutils literal"><span class="pre">source</span></code> is the remote CouchDB instance,
+and the <code class="docutils literal"><span class="pre">target</span></code> is the local database.</p>
+<p>Pull replication is the most useful solution to use if your source database
+has a permanent IP address, and your destination (local) database may have a
+dynamically assigned IP address (for example, through DHCP). This is
+particularly important if you are replicating to a mobile or other device
+from a central server.</p>
+</li>
+<li><p class="first"><em>Push replication</em> is where the <code class="docutils literal"><span class="pre">source</span></code> is a local database, and
+<code class="docutils literal"><span class="pre">target</span></code> is a remote database.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="specifying-the-source-and-target-database">
+<h2>1.2.8.2. Specifying the Source and Target Database<a class="headerlink" href="#specifying-the-source-and-target-database" title="Permalink to this headline">¶</a></h2>
+<p>You must use the URL specification of the CouchDB database if you want to
+perform replication in either of the following two situations:</p>
+<ul class="simple">
+<li>Replication with a remote database (i.e. another instance of CouchDB on the
+same host, or a different host)</li>
+<li>Replication with a database that requires authentication</li>
+</ul>
+<p>For example, to request replication between a database local to the CouchDB
+instance to which you send the request, and a remote database you might use the
+following request:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">http://couchdb:5984/_replicate</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;source&quot;</span> <span class="p">:</span> <span class="s2">&quot;recipes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span> <span class="p">:</span> <span class="s2">&quot;http://coucdb-remote:5984/recipes&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In all cases, the requested databases in the <code class="docutils literal"><span class="pre">source</span></code> and <code class="docutils literal"><span class="pre">target</span></code>
+specification must exist. If they do not, an error will be returned within the
+JSON object:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;error&quot;</span> <span class="o">:</span> <span class="s2">&quot;db_not_found&quot;</span>
+    <span class="s2">&quot;reason&quot;</span> <span class="o">:</span> <span class="s2">&quot;could not open http://couchdb-remote:5984/ol1ka/&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can create the target database (providing your user credentials allow it)
+by adding the <code class="docutils literal"><span class="pre">create_target</span></code> field to the request object:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">http://couchdb:5984/_replicate</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;create_target&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+    <span class="s2">&quot;source&quot;</span> <span class="p">:</span> <span class="s2">&quot;recipes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span> <span class="p">:</span> <span class="s2">&quot;http://couchdb-remote:5984/recipes&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">create_target</span></code> field is not destructive. If the database already
+exists, the replication proceeds as normal.</p>
+</div>
+<div class="section" id="single-replication">
+<h2>1.2.8.3. Single Replication<a class="headerlink" href="#single-replication" title="Permalink to this headline">¶</a></h2>
+<p>You can request replication of a database so that the two databases can be
+synchronized. By default, the replication process occurs one time and
+synchronizes the two databases together. For example, you can request a single
+synchronization between two databases by supplying the <code class="docutils literal"><span class="pre">source</span></code> and
+<code class="docutils literal"><span class="pre">target</span></code> fields within the request JSON content.</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">http://couchdb:5984/_replicate</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;source&quot;</span> <span class="p">:</span> <span class="s2">&quot;recipes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span> <span class="p">:</span> <span class="s2">&quot;recipes-snapshot&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the above example, the databases <code class="docutils literal"><span class="pre">recipes</span></code> and <code class="docutils literal"><span class="pre">recipes-snapshot</span></code> will
+be synchronized. These databases are local to the CouchDB instance where the
+request was made. The response will be a JSON structure containing the success
+(or failure) of the synchronization process, and statistics about the process:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;ok&quot;</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s2">&quot;history&quot;</span> <span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;docs_read&quot;</span> <span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="s2">&quot;session_id&quot;</span> <span class="o">:</span> <span class="s2">&quot;52c2370f5027043d286daca4de247db0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;recorded_seq&quot;</span> <span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="s2">&quot;end_last_seq&quot;</span> <span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="s2">&quot;doc_write_failures&quot;</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span> <span class="o">:</span> <span class="s2">&quot;Thu, 28 Oct 2010 10:24:13 GMT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;start_last_seq&quot;</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;end_time&quot;</span> <span class="o">:</span> <span class="s2">&quot;Thu, 28 Oct 2010 10:24:14 GMT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;missing_checked&quot;</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;docs_written&quot;</span> <span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="s2">&quot;missing_found&quot;</span> <span class="o">:</span> <span class="mi">1000</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;session_id&quot;</span> <span class="o">:</span> <span class="s2">&quot;52c2370f5027043d286daca4de247db0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_last_seq&quot;</span> <span class="o">:</span> <span class="mi">1000</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="continuous-replication">
+<h2>1.2.8.4. Continuous Replication<a class="headerlink" href="#continuous-replication" title="Permalink to this headline">¶</a></h2>
+<p>Synchronization of a database with the previously noted methods happens only
+once, at the time the replicate request is made. To have the target database
+permanently replicated from the source, you must set the <code class="docutils literal"><span class="pre">continuous</span></code> field
+of the JSON object within the request to true.</p>
+<p>With continuous replication changes in the source database are replicated to
+the target database in perpetuity until you specifically request that
+replication ceases.</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">http://couchdb:5984/_replicate</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;continuous&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+    <span class="s2">&quot;source&quot;</span> <span class="p">:</span> <span class="s2">&quot;recipes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span> <span class="p">:</span> <span class="s2">&quot;http://couchdb-remote:5984/recipes&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Changes will be replicated between the two databases as long as a network
+connection is available between the two instances.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Two keep two databases synchronized with each other, you need to set
+replication in both directions; that is, you must replicate from <code class="docutils literal"><span class="pre">source</span></code>
+to <code class="docutils literal"><span class="pre">target</span></code>, and separately from <code class="docutils literal"><span class="pre">target</span></code> to <code class="docutils literal"><span class="pre">source</span></code>.</p>
+</div>
+</div>
+<div class="section" id="canceling-continuous-replication">
+<h2>1.2.8.5. Canceling Continuous Replication<a class="headerlink" href="#canceling-continuous-replication" title="Permalink to this headline">¶</a></h2>
+<p>You can cancel continuous replication by adding the <code class="docutils literal"><span class="pre">cancel</span></code> field to the
+JSON request object and setting the value to true. Note that the structure of
+the request must be identical to the original for the cancellation request to
+be honoured. For example, if you requested continuous replication, the
+cancellation request must also contain the <code class="docutils literal"><span class="pre">continuous</span></code> field.</p>
+<p>For example, the replication request:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">http://couchdb:5984/_replicate</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;source&quot;</span> <span class="p">:</span> <span class="s2">&quot;recipes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span> <span class="p">:</span> <span class="s2">&quot;http://couchdb-remote:5984/recipes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;create_target&quot;</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;continuous&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Must be canceled using the request:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">http://couchdb:5984/_replicate</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;cancel&quot;</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;continuous&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+    <span class="s2">&quot;create_target&quot;</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;source&quot;</span> <span class="p">:</span> <span class="s2">&quot;recipes&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span> <span class="p">:</span> <span class="s2">&quot;http://couchdb-remote:5984/recipes&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Requesting cancellation of a replication that does not exist results in a 404
+error.</p>
+</div>
+</div>
+<div class="section" id="scheduler-jobs">
+<span id="api-server-scheduler-jobs"></span><h1>1.2.9. <code class="docutils literal"><span class="pre">/_scheduler/jobs</span></code><a class="headerlink" href="#scheduler-jobs" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--_scheduler-jobs">
+<code class="descname">GET </code><code class="descname">/_scheduler/jobs</code><a class="headerlink" href="#get--_scheduler-jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of replication jobs. Includes replications created via
+<a class="reference internal" href="#api-server-replicate"><span class="std std-ref">/_replicate</span></a> endpoint as well as those created from
+replication documents. Does not include replications which have completed
+or have failed to start because replication documents were malformed. Each
+job description will include source and target information, replication id,
+a history of recent event, and a few other things.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>limit</strong> (<em>number</em>) – How many results to return</li>
+<li><strong>skip</strong> (<em>number</em>) – How many result to skip starting at the beginning,
+ordered by replication ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>offset</strong> (<em>number</em>) – How many results were skipped</li>
+<li><strong>total_rows</strong> (<em>number</em>) – Total number of replication jobs</li>
+<li><strong>id</strong> (<em>string</em>) – Replication ID.</li>
+<li><strong>database</strong> (<em>string</em>) – Replication document database</li>
+<li><strong>doc_id</strong> (<em>string</em>) – Replication document ID</li>
+<li><strong>history</strong> (<em>list</em>) – Timestamped history of events as a list of objects</li>
+<li><strong>pid</strong> (<em>string</em>) – Replication process ID</li>
+<li><strong>node</strong> (<em>string</em>) – Cluster node where the job is running</li>
+<li><strong>source</strong> (<em>string</em>) – Replication source</li>
+<li><strong>target</strong> (<em>string</em>) – Replication target</li>
+<li><strong>start_time</strong> (<em>string</em>) – Timestamp of when the replication was started</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – CouchDB Server Administrator privileges required</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_scheduler/jobs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">1690</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 29 Apr 2017 05:05:16 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;jobs&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;_replicator&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;doc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cdyno-0000001-0000003&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;history&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;started&quot;</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;added&quot;</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;8f5b1bd0be6f9166ccfd36fc8be8fc22+continuous&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;node1@127.0.0.1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;0.1850.0&gt;&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://myserver.com/foo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;http://adm:*****@localhost:15984/cdyno-0000003/&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;user&quot;</span><span class="p">:</span> <span class="kc">null</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;_replicator&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;doc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cdyno-0000001-0000002&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;history&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;started&quot;</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;added&quot;</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;e327d79214831ca4c11550b4a453c9ba+continuous&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;node2@127.0.0.1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;0.1757.0&gt;&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://myserver.com/foo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;http://adm:*****@localhost:15984/cdyno-0000002/&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;user&quot;</span><span class="p">:</span> <span class="kc">null</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;total_rows&quot;</span><span class="p">:</span> <span class="mi">2</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="scheduler-docs">
+<span id="api-server-scheduler-docs"></span><h1>1.2.10. <code class="docutils literal"><span class="pre">/_scheduler/docs</span></code><a class="headerlink" href="#scheduler-docs" title="Permalink to this headline">¶</a></h1>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.1.0: </span>Use this endpoint to monitor the state of
+document-based replications. Previously needed to poll both
+documents and <code class="docutils literal"><span class="pre">_active_tasks</span></code> to get a complete state
+summary</p>
+</div>
+<dl class="get">
+<dt id="get--_scheduler-docs">
+<code class="descname">GET </code><code class="descname">/_scheduler/docs</code><a class="headerlink" href="#get--_scheduler-docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of replication document states. Includes information about all the
+documents, even in <code class="docutils literal"><span class="pre">completed</span></code> and <code class="docutils literal"><span class="pre">failed</span></code> states. For each document
+it returns the document ID, the database, the replication ID, source and
+target, and other information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>limit</strong> (<em>number</em>) – How many results to return</li>
+<li><strong>skip</strong> (<em>number</em>) – How many result to skip starting at the beginning, if
+ordered by document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>offset</strong> (<em>number</em>) – How many results were skipped</li>
+<li><strong>total_rows</strong> (<em>number</em>) – Total number of replication documents.</li>
+<li><strong>id</strong> (<em>string</em>) – Replication ID, or <code class="docutils literal"><span class="pre">null</span></code> if state is <code class="docutils literal"><span class="pre">completed</span></code> or
+<code class="docutils literal"><span class="pre">failed</span></code></li>
+<li><strong>state</strong> (<em>string</em>) – One of following states (see <a class="reference internal" href="../../replication/replicator.html#replicator-states"><span class="std std-ref">Replication states</span></a>
+for descriptions): <code class="docutils literal"><span class="pre">initializing</span></code>, <code class="docutils literal"><span class="pre">running</span></code>,
+<code class="docutils literal"><span class="pre">completed</span></code>, <code class="docutils literal"><span class="pre">pending</span></code>, <code class="docutils literal"><span class="pre">crashing</span></code>, <code class="docutils literal"><span class="pre">error</span></code>,
+<code class="docutils literal"><span class="pre">failed</span></code></li>
+<li><strong>database</strong> (<em>string</em>) – Database where replication document came from</li>
+<li><strong>doc_id</strong> (<em>string</em>) – Replication document ID</li>
+<li><strong>node</strong> (<em>string</em>) – Cluster node where the job is running</li>
+<li><strong>source</strong> (<em>string</em>) – Replication source</li>
+<li><strong>target</strong> (<em>string</em>) – Replication target</li>
+<li><strong>start_time</strong> (<em>string</em>) – Timestamp of when the replication was started</li>
+<li><strong>last_update</strong> (<em>string</em>) – Timestamp of last state update</li>
+<li><strong>info</strong> (<em>object</em>) – May contain additional information about the state.
+For error states, this will be a string. For success
+states this will contain a JSON object (see below).</li>
+<li><strong>error_count</strong> (<em>number</em>) – Consecutive errors count. Indicates how many
+times in a row this replication has crashed.
+Replication will be retried with an exponential
+backoff based on this number. As soon as the
+replication succeeds this count is reset to 0.
+To can be used to get an idea why a particular
+replication is not making progress.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – CouchDB Server Administrator privileges required</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal"><span class="pre">info</span></code> field of a scheduler doc:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">JSON Object:</th><td class="field-body"><ul class="first last simple">
+<li><strong>revisions_checked</strong> (<em>number</em>) – The count of revisions which have been
+checked since this replication began.</li>
+<li><strong>missing_revisions_found</strong> (<em>number</em>) – The count of revisions which were
+found on the source, but missing from the target.</li>
+<li><strong>docs_read</strong> (<em>number</em>) – The count of docs which have been read from the
+source.</li>
+<li><strong>docs_written</strong> (<em>number</em>) – The count of docs which have been written to the
+target.</li>
+<li><strong>changes_pending</strong> (<em>number</em>) – The count of changes not yet replicated.</li>
+<li><strong>doc_write_failures</strong> (<em>number</em>) – The count of docs which failed to be
+written to the target.</li>
+<li><strong>checkpointed_source_seq</strong> (<em>object</em>) – The source sequence id which was last
+successfully replicated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_scheduler/docs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 29 Apr 2017 05:10:08 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">Server: CouchDB (Erlang/OTP)</span>
+<span class="na">Transfer-Encoding</span><span class="o">:</span> <span class="l">chunked</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;docs&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;_replicator&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;doc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cdyno-0000001-0000002&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;error_count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;e327d79214831ca4c11550b4a453c9ba+continuous&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;info&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;node2@127.0.0.1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;proxy&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://myserver.com/foo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;http://adm:*****@localhost:15984/cdyno-0000002/&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;_replicator&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;doc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cdyno-0000001-0000003&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;error_count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;8f5b1bd0be6f9166ccfd36fc8be8fc22+continuous&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;info&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;node1@127.0.0.1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;proxy&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://myserver.com/foo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;http://adm:*****@localhost:15984/cdyno-0000003/&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;total_rows&quot;</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--_scheduler-docs-replicator_db">
+<code class="descname">GET </code><code class="descname">/_scheduler/docs/{replicator_db}</code><a class="headerlink" href="#get--_scheduler-docs-replicator_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about replication documents from a replicator database.
+The default replicator database is <code class="docutils literal"><span class="pre">_replicator</span></code> but other replicator
+databases can exist if their name ends with the suffix <code class="docutils literal"><span class="pre">/_replicator</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As a convenience slashes (<code class="docutils literal"><span class="pre">/</span></code>) in replicator db names do not
+have to be escaped. So <code class="docutils literal"><span class="pre">/_scheduler/docs/other/_replicator</span></code> is valid
+and equivalent to <code class="docutils literal"><span class="pre">/_scheduler/docs/other%2f_replicator</span></code></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>limit</strong> (<em>number</em>) – How many results to return</li>
+<li><strong>skip</strong> (<em>number</em>) – How many result to skip starting at the beginning, if
+ordered by document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>offset</strong> (<em>number</em>) – How many results were skipped</li>
+<li><strong>total_rows</strong> (<em>number</em>) – Total number of replication documents.</li>
+<li><strong>id</strong> (<em>string</em>) – Replication ID, or <code class="docutils literal"><span class="pre">null</span></code> if state is <code class="docutils literal"><span class="pre">completed</span></code> or
+<code class="docutils literal"><span class="pre">failed</span></code></li>
+<li><strong>state</strong> (<em>string</em>) – One of following states (see <a class="reference internal" href="../../replication/replicator.html#replicator-states"><span class="std std-ref">Replication states</span></a>
+for descriptions): <code class="docutils literal"><span class="pre">initializing</span></code>, <code class="docutils literal"><span class="pre">running</span></code>,
+<code class="docutils literal"><span class="pre">completed</span></code>, <code class="docutils literal"><span class="pre">pending</span></code>, <code class="docutils literal"><span class="pre">crashing</span></code>, <code class="docutils literal"><span class="pre">error</span></code>,
+<code class="docutils literal"><span class="pre">failed</span></code></li>
+<li><strong>database</strong> (<em>string</em>) – Database where replication document came from</li>
+<li><strong>doc_id</strong> (<em>string</em>) – Replication document ID</li>
+<li><strong>node</strong> (<em>string</em>) – Cluster node where the job is running</li>
+<li><strong>source</strong> (<em>string</em>) – Replication source</li>
+<li><strong>target</strong> (<em>string</em>) – Replication target</li>
+<li><strong>start_time</strong> (<em>string</em>) – Timestamp of when the replication was started</li>
+<li><strong>last_update</strong> (<em>string</em>) – Timestamp of last state update</li>
+<li><strong>info</strong> (<em>object</em>) – May contain additional information about the state.
+For error states, this will be a string. For success
+states this will contain a JSON object (see below).</li>
+<li><strong>error_count</strong> (<em>number</em>) – Consecutive errors count. Indicates how many
+times in a row this replication has crashed.
+Replication will be retried with an exponential
+backoff based on this number. As soon as the
+replication succeeds this count is reset to 0.
+To can be used to get an idea why a particular
+replication is not making progress.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – CouchDB Server Administrator privileges required</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal"><span class="pre">info</span></code> field of a scheduler doc:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">JSON Object:</th><td class="field-body"><ul class="first last simple">
+<li><strong>revisions_checked</strong> (<em>number</em>) – The count of revisions which have been
+checked since this replication began.</li>
+<li><strong>missing_revisions_found</strong> (<em>number</em>) – The count of revisions which were
+found on the source, but missing from the target.</li>
+<li><strong>docs_read</strong> (<em>number</em>) – The count of docs which have been read from the
+source.</li>
+<li><strong>docs_written</strong> (<em>number</em>) – The count of docs which have been written to the
+target.</li>
+<li><strong>changes_pending</strong> (<em>number</em>) – The count of changes not yet replicated.</li>
+<li><strong>doc_write_failures</strong> (<em>number</em>) – The count of docs which failed to be
+written to the target.</li>
+<li><strong>checkpointed_source_seq</strong> (<em>object</em>) – The source sequence id which was last
+successfully replicated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_scheduler/docs/other/_replicator</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 29 Apr 2017 05:10:08 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">Server: CouchDB (Erlang/OTP)</span>
+<span class="na">Transfer-Encoding</span><span class="o">:</span> <span class="l">chunked</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;docs&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;other/_replicator&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;doc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cdyno-0000001-0000002&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;error_count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;e327d79214831ca4c11550b4a453c9ba+continuous&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;info&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;node2@127.0.0.1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;proxy&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://myserver.com/foo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;http://adm:*****@localhost:15984/cdyno-0000002/&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;total_rows&quot;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--_scheduler-docs-replicator_db-docid">
+<code class="descname">GET </code><code class="descname">/_scheduler/docs/{replicator_db}/{docid}</code><a class="headerlink" href="#get--_scheduler-docs-replicator_db-docid" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As a convenience slashes (<code class="docutils literal"><span class="pre">/</span></code>) in replicator db names do not
+have to be escaped. So <code class="docutils literal"><span class="pre">/_scheduler/docs/other/_replicator</span></code> is valid
+and equivalent to <code class="docutils literal"><span class="pre">/_scheduler/docs/other%2f_replicator</span></code></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – Replication ID, or <code class="docutils literal"><span class="pre">null</span></code> if state is <code class="docutils literal"><span class="pre">completed</span></code> or
+<code class="docutils literal"><span class="pre">failed</span></code></li>
+<li><strong>state</strong> (<em>string</em>) – One of following states (see <a class="reference internal" href="../../replication/replicator.html#replicator-states"><span class="std std-ref">Replication states</span></a>
+for descriptions): <code class="docutils literal"><span class="pre">initializing</span></code>, <code class="docutils literal"><span class="pre">running</span></code>,
+<code class="docutils literal"><span class="pre">completed</span></code>, <code class="docutils literal"><span class="pre">pending</span></code>, <code class="docutils literal"><span class="pre">crashing</span></code>, <code class="docutils literal"><span class="pre">error</span></code>,
+<code class="docutils literal"><span class="pre">failed</span></code></li>
+<li><strong>database</strong> (<em>string</em>) – Database where replication document came from</li>
+<li><strong>doc_id</strong> (<em>string</em>) – Replication document ID</li>
+<li><strong>node</strong> (<em>string</em>) – Cluster node where the job is running</li>
+<li><strong>source</strong> (<em>string</em>) – Replication source</li>
+<li><strong>target</strong> (<em>string</em>) – Replication target</li>
+<li><strong>start_time</strong> (<em>string</em>) – Timestamp of when the replication was started</li>
+<li><strong>last_update</strong> (<em>string</em>) – Timestamp of last state update</li>
+<li><strong>info</strong> (<em>object</em>) – May contain additional information about the state.
+For error states, this will be a string. For success
+states this will contain a JSON object (see below).</li>
+<li><strong>error_count</strong> (<em>number</em>) – Consecutive errors count. Indicates how many
+times in a row this replication has crashed.
+Replication will be retried with an exponential
+backoff based on this number. As soon as the
+replication succeeds this count is reset to 0.
+To can be used to get an idea why a particular
+replication is not making progress.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a> – CouchDB Server Administrator privileges required</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal"><span class="pre">info</span></code> field of a scheduler doc:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">JSON Object:</th><td class="field-body"><ul class="first last simple">
+<li><strong>revisions_checked</strong> (<em>number</em>) – The count of revisions which have been
+checked since this replication began.</li>
+<li><strong>missing_revisions_found</strong> (<em>number</em>) – The count of revisions which were
+found on the source, but missing from the target.</li>
+<li><strong>docs_read</strong> (<em>number</em>) – The count of docs which have been read from the
+source.</li>
+<li><strong>docs_written</strong> (<em>number</em>) – The count of docs which have been written to the
+target.</li>
+<li><strong>changes_pending</strong> (<em>number</em>) – The count of changes not yet replicated.</li>
+<li><strong>doc_write_failures</strong> (<em>number</em>) – The count of docs which failed to be
+written to the target.</li>
+<li><strong>checkpointed_source_seq</strong> (<em>object</em>) – <dl class="docutils">
+<dt>The source sequence id which was last</dt>
+<dd>successfully replicated.</dd>
+</dl>
+<p><strong>Request</strong>:</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_scheduler/docs/other/_replicator/cdyno-0000001-0000002</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 29 Apr 2017 05:10:08 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">Server: CouchDB (Erlang/OTP)</span>
+<span class="na">Transfer-Encoding</span><span class="o">:</span> <span class="l">chunked</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;other/_replicator&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;doc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cdyno-0000001-0000002&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;error_count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;e327d79214831ca4c11550b4a453c9ba+continuous&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;info&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;node2@127.0.0.1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;proxy&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://myserver.com/foo&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-04-29T05:01:37Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;http://adm:*****@localhost:15984/cdyno-0000002/&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="node-node-name-stats">
+<span id="api-server-stats"></span><h1>1.2.11. <code class="docutils literal"><span class="pre">/_node/{node-name}/_stats</span></code><a class="headerlink" href="#node-node-name-stats" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--_node-node-name-_stats">
+<code class="descname">GET </code><code class="descname">/_node/{node-name}/_stats</code><a class="headerlink" href="#get--_node-node-name-_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal"><span class="pre">_stats</span></code> resource returns a JSON object containing the statistics
+for the running server. The object is structured with top-level sections
+collating the statistics for a range of entries, with each individual
+statistic being easily identified, and the content of each statistic is
+self-describing.</p>
+<p>The literal string <code class="docutils literal"><span class="pre">_local</span></code> serves as an alias for the local node name, so
+for all stats URLs, <code class="docutils literal"><span class="pre">{node-name}</span></code> may be replaced <code class="docutils literal"><span class="pre">_local</span></code>, to
+interact with the local node’s statistics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_node/_local/_stats/couchdb/request_time</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">187</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 10 Aug 2013 11:41:11 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;arithmetic_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;geometric_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;harmonic_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;median&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;variance&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;standard_deviation&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;skewness&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;kurtosis&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;percentile&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">[</span>
+        <span class="mi">50</span><span class="p">,</span>
+        <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="mi">75</span><span class="p">,</span>
+        <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="mi">90</span><span class="p">,</span>
+        <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="mi">95</span><span class="p">,</span>
+        <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="mi">99</span><span class="p">,</span>
+        <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="mi">999</span><span class="p">,</span>
+        <span class="mi">0</span>
+      <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;histogram&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">[</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span>
+      <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;histogram&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;length of a request inside CouchDB without MochiWeb&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>The fields provide the current, minimum and maximum, and a collection of
+statistical means and quantities. The quantity in each case is not defined, but
+the descriptions below provide sufficient detail to determine units.</p>
+<p>Statistics are reported by ‘group’.  The statistics are divided into the
+following top-level sections:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">couch_log</span></code>: Logging subsystem</li>
+<li><code class="docutils literal"><span class="pre">couch_replicator</span></code>: Replication scheduler and subsystem</li>
+<li><code class="docutils literal"><span class="pre">couchdb</span></code>: Primary CouchDB database operations</li>
+<li><code class="docutils literal"><span class="pre">fabric</span></code>: Cluster-related operations</li>
+<li><code class="docutils literal"><span class="pre">global_changes</span></code>: Global changes feed</li>
+<li><code class="docutils literal"><span class="pre">mem3</span></code>: Node membership-related statistics</li>
+<li><code class="docutils literal"><span class="pre">pread</span></code>: CouchDB file-related exceptions</li>
+<li><code class="docutils literal"><span class="pre">rexi</span></code>: Cluster internal RPC-related statistics</li>
+</ul>
+<p>The type of the statistic is included in the <code class="docutils literal"><span class="pre">type</span></code> field, and is one of
+the following:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">counter</span></code>: Monotonically increasing counter, resets on restart</li>
+<li><code class="docutils literal"><span class="pre">histogram</span></code>: Binned set of values with meaningful subdivisions</li>
+<li><code class="docutils literal"><span class="pre">gauge</span></code>: Single numerical value that can go up and down</li>
+</ul>
+<p>You can also access individual statistics by quoting the statistics sections
+and statistic ID as part of the URL path. For example, to get the
+<code class="docutils literal"><span class="pre">request_time</span></code> statistics within the <code class="docutils literal"><span class="pre">couchdb</span></code> section for the target
+node, you can use:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_node/_local/_stats/couchdb/request_time</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p>This returns an entire statistics object, as with the full request, but
+containing only the requested individual statistic.</p>
+</div>
+<div class="section" id="node-node-name-system">
+<h1>1.2.12. <code class="docutils literal"><span class="pre">/_node/{node-name}/_system</span></code><a class="headerlink" href="#node-node-name-system" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--_node-node-name-_system">
+<code class="descname">GET </code><code class="descname">/_node/{node-name}/_system</code><a class="headerlink" href="#get--_node-node-name-_system" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal"><span class="pre">_system</span></code> resource returns a JSON object containing various
+system-level statistics for the running server. The object is structured
+with top-level sections collating the statistics for a range of entries,
+with each individual statistic being easily identified, and the content of
+each statistic is self-describing.</p>
+<p>The literal string <code class="docutils literal"><span class="pre">_local</span></code> serves as an alias for the local node name, so
+for all stats URLs, <code class="docutils literal"><span class="pre">{node-name}</span></code> may be replaced <code class="docutils literal"><span class="pre">_local</span></code>, to
+interact with the local node’s statistics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_node/_local/_system</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">187</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 10 Aug 2013 11:41:11 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;uptime&quot;</span><span class="p">:</span> <span class="mi">259</span><span class="p">,</span>
+  <span class="nt">&quot;memory&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="err">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>These statistics are generally intended for CouchDB developers only.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="node-node-name-restart">
+<span id="api-server-restart"></span><h1>1.2.13. <code class="docutils literal"><span class="pre">/_node/{node-name}/_restart</span></code><a class="headerlink" href="#node-node-name-restart" title="Permalink to this headline">¶</a></h1>
+<dl class="post">
+<dt id="post--_node-node-name-_restart">
+<code class="descname">POST </code><code class="descname">/_node/{node-name}/_restart</code><a class="headerlink" href="#post--_node-node-name-_restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>This API is to facilitate integration testing only
+it is not meant to be used in production</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utils">
+<span id="api-server-utils"></span><h1>1.2.14. <code class="docutils literal"><span class="pre">/_utils</span></code><a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--_utils">
+<code class="descname">GET </code><code class="descname">/_utils</code><a class="headerlink" href="#get--_utils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accesses the built-in Fauxton administration interface for CouchDB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3">Location</a> – New URI location</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.2">301 Moved Permanently</a> – Redirects to <a class="reference internal" href="#get--_utils-" title="GET /_utils/"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/_utils/</span></code></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--_utils-">
+<code class="descname">GET </code><code class="descname">/_utils/</code><a class="headerlink" href="#get--_utils-" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <em class="mimetype">text/html</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29">Last-Modified</a> – Static files modification timestamp</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="up">
+<span id="api-server-up"></span><h1>1.2.15. <code class="docutils literal"><span class="pre">/_up</span></code><a class="headerlink" href="#up" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
+<dl class="get">
+<dt id="get--_up">
+<code class="descname">GET </code><code class="descname">/_up</code><a class="headerlink" href="#get--_up" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confirms that the server is up, running, and ready to respond to requests.
+If <a class="reference internal" href="../../config/couchdb.html#couchdb/maintenance_mode" title="maintenance_mode"><code class="xref config config-option docutils literal"><span class="pre">maintenance_mode</span></code></a> is
+<code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">nolb</span></code>, the endpoint will return a 404 response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <em class="mimetype">application/json</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – The server is unavaialble for requests at this time.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">16</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 17 Mar 2018 04:46:26 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB/2.2.0-f999071ec (Erlang OTP/19)</span>
+<span class="na">X-Couch-Request-ID</span><span class="o">:</span> <span class="l">c57a3b2787</span>
+<span class="na">X-CouchDB-Body-Time</span><span class="o">:</span> <span class="l">0</span>
+
+<span class="p">{</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="uuids">
+<span id="api-server-uuids"></span><h1>1.2.16. <code class="docutils literal"><span class="pre">/_uuids</span></code><a class="headerlink" href="#uuids" title="Permalink to this headline">¶</a></h1>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.0.0.</span></p>
+</div>
+<dl class="get">
+<dt id="get--_uuids">
+<code class="descname">GET </code><code class="descname">/_uuids</code><a class="headerlink" href="#get--_uuids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests one or more Universally Unique Identifiers (UUIDs) from the
+CouchDB instance. The response is a JSON object providing a list of UUIDs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain</em></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>count</strong> (<em>number</em>) – Number of UUIDs to return. Default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <ul>
+<li><em class="mimetype">application/json</em></li>
+<li><em class="mimetype">text/plain; charset=utf-8</em></li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Response hash</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Requested more UUIDs than is <a class="reference internal" href="../../config/misc.html#uuids/max_count" title="max_count"><code class="xref config config-option docutils literal"><span class="pre">allowed</span></code></a> to retrieve</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/_uuids?count=10</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">362</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Sat, 10 Aug 2013 11:46:25 GMT</span>
+<span class="na">ETag</span><span class="o">:</span> <span class="l">&quot;DGRWWQFLUDWN5MRKSLKQ425XV&quot;</span>
+<span class="na">Expires</span><span class="o">:</span> <span class="l">Fri, 01 Jan 1990 00:00:00 GMT</span>
+<span class="na">Pragma</span><span class="o">:</span> <span class="l">no-cache</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;uuids&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6002413&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec600250b&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6002c41&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6003b90&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6003fca&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6004bef&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec600528f&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6005e0b&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6006158&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;75480ca477454894678e22eec6006161&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>The UUID type is determined by the <a class="reference internal" href="../../config/misc.html#uuids/algorithm" title="algorithm"><code class="xref config config-option docutils literal"><span class="pre">UUID</span> <span class="pre">algorithm</span></code></a> setting in the CouchDB configuration.</p>
+<p>The UUID type may be changed at any time through the
+<a class="reference internal" href="configuration.html#api-config-section-key"><span class="std std-ref">Configuration API</span></a>. For example, the UUID type
+could be changed to <code class="docutils literal"><span class="pre">random</span></code> by sending this HTTP request:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">PUT</span> <span class="nn">http://couchdb:5984/_node/nonode@nohost/_config/uuids/algorithm</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">*/*</span>
+
+<span class="s2">&quot;random&quot;</span>
+</pre></div>
+</div>
+<p>You can verify the change by obtaining a list of UUIDs:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;uuids&quot;</span> <span class="o">:</span> <span class="p">[</span>
+        <span class="s2">&quot;031aad7b469956cf2826fcb2a9260492&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;6ec875e15e6b385120938df18ee8e496&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cff9e881516483911aa2f0e98949092d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;b89d37509d39dd712546f9510d4a9271&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;2e0dbf7f6c4ad716f21938a016e4e59f&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="favicon-ico">
+<span id="api-server-favicon"></span><h1>1.2.17. <code class="docutils literal"><span class="pre">/favicon.ico</span></code><a class="headerlink" href="#favicon-ico" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--favicon.ico">
+<code class="descname">GET </code><code class="descname">/favicon.ico</code><a class="headerlink" href="#get--favicon.ico" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary content for the <cite>favicon.ico</cite> site icon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> – <em class="mimetype">image/x-icon</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – The requested content could not be found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="authn.html" class="btn btn-neutral float-right" title="1.2.18. Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="1.2. Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

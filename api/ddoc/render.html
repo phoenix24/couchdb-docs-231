@@ -1,0 +1,799 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.5.5. /db/_design/design-doc/_show/show-name &mdash; Apache CouchDB® 2.3 Documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+    <link rel="canonical" href="http://docs.couchdb.org/en/stable/api/ddoc/render.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/css/rtd_theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../../about.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Apache CouchDB® 2.3 Documentation" href="../../index.html"/>
+        <link rel="up" title="1.5. Design Documents" href="index.html"/>
+        <link rel="next" title="1.5.11. /db/_design/design-doc/_rewrite/path" href="rewrites.html"/>
+        <link rel="prev" title="1.5.4. /db/_design/design-doc/_view/view-name" href="views.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache CouchDB®
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+<h2>Table of Contents</h2>
+
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../replication/index.html">2. Replication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ddocs/index.html">3. Design Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../best-practices/index.html">4. Best Practices</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Administration Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/index.html">2. Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">3. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cluster/index.html">4. Cluster Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintenance/index.html">5. Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fauxton/index.html">6. Fauxton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental.html">7. Experimental Features</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../basics.html">1.1. API Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server/index.html">1.2. Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">1.3. Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../document/index.html">1.4. Documents</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.5. Design Documents</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="common.html">1.5.1. <code class="docutils literal"><span class="pre">/db/_design/design-doc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#db-design-design-doc-attachment">1.5.2. <code class="docutils literal"><span class="pre">/db/_design/design-doc/attachment</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#db-design-design-doc-info">1.5.3. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_info</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="views.html">1.5.4. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_view/view-name</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.5.5. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_show/show-name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-design-design-doc-show-show-name-doc-id">1.5.6. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_show/show-name/doc-id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-design-design-doc-list-list-name-view-name">1.5.7. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_list/list-name/view-name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-design-design-doc-list-list-name-other-ddoc-view-name">1.5.8. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_list/list-name/other-ddoc/view-name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-design-design-doc-update-update-name">1.5.9. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_update/update-name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-design-design-doc-update-update-name-doc-id">1.5.10. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_update/update-name/doc-id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rewrites.html">1.5.11. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_rewrite/path</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../local.html">1.6. Local (non-replicating) Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../json-structure.html">2. JSON Structure Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query-server/index.html">3. Query Server</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../whatsnew/index.html">1. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cve/index.html">2. Security Issues / CVEs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cve/index.html#reporting-new-security-problems-with-apache-couchdb">3. Reporting New Security Problems with Apache CouchDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">5. Contributing to this Documentation</a></li>
+</ul>
+
+            
+          
+<h2>Quick Reference Guides</h2>
+<ul>
+<li><a href="../../http-api.html">API Quick Reference</a></li>
+<li><a href="../../config-ref.html">Configuration Quick Reference</a></li>
+</ul>
+
+
+<h2>Local Links</h2>
+<ul>
+<li><a href="../">Fauxton</a></li>
+</ul>
+
+
+<h2>More Help</h2>
+<ul>
+<li><a href="https://couchdb.apache.org/">CouchDB Homepage</a></li>
+<li><a href="https://couchdb.apache.org/#mailing-list">Mailing Lists</a></li>
+<li><a href="http://webchat.freenode.net/?channels=couchdb">IRC</a></li>
+<li><a href="https://github.com/apache/couchdb/issues">Issue Tracker</a></li>
+<li><a href="../../download.html">Download Docs</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache CouchDB®</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">1. API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">1.5. Design Documents</a> &raquo;</li>
+        
+      <li>1.5.5. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_show/show-name</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apache/couchdb-documentation/blob/master/src/api/ddoc/render.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="db-design-design-doc-show-show-name">
+<span id="api-ddoc-show"></span><h1>1.5.5. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_show/show-name</span></code><a class="headerlink" href="#db-design-design-doc-show-show-name" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--db-_design-ddoc-_show-func">
+<code class="descname">GET </code><code class="descname">/{db}/_design/{ddoc}/_show/{func}</code><a class="headerlink" href="#get--db-_design-ddoc-_show-func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="post">
+<dt id="post--db-_design-ddoc-_show-func">
+<code class="descname">POST </code><code class="descname">/{db}/_design/{ddoc}/_show/{func}</code><a class="headerlink" href="#post--db-_design-ddoc-_show-func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies <a class="reference internal" href="../../ddocs/ddocs.html#showfun"><span class="std std-ref">show function</span></a> for <cite>null</cite> document.</p>
+<p>The request and response parameters are depended upon function
+implementation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>ddoc</strong> – Design document name</li>
+<li><strong>func</strong> – Show function name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Response signature</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>format</strong> (<em>string</em>) – Format of the returned response.
+Used by <a class="reference internal" href="../../query-server/javascript.html#provides" title="provides"><code class="xref js js-func docutils literal"><span class="pre">provides()</span></code></a> function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Query server error</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Function</strong>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="nx">body</span><span class="o">:</span> <span class="s2">&quot;no doc&quot;</span><span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="nx">body</span><span class="o">:</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">description</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/_design/recipe/_show/description</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">6</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/html; charset=utf-8</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 21 Aug 2013 12:34:07 GMT</span>
+<span class="na">Etag</span><span class="o">:</span> <span class="l">&quot;7Z2TO7FPEMZ0F4GH0RJCRIOAU&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+
+no doc
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="db-design-design-doc-show-show-name-doc-id">
+<span id="api-ddoc-show-id"></span><h1>1.5.6. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_show/show-name/doc-id</span></code><a class="headerlink" href="#db-design-design-doc-show-show-name-doc-id" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--db-_design-ddoc-_show-func-docid">
+<code class="descname">GET </code><code class="descname">/{db}/_design/{ddoc}/_show/{func}/{docid}</code><a class="headerlink" href="#get--db-_design-ddoc-_show-func-docid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="post">
+<dt id="post--db-_design-ddoc-_show-func-docid">
+<code class="descname">POST </code><code class="descname">/{db}/_design/{ddoc}/_show/{func}/{docid}</code><a class="headerlink" href="#post--db-_design-ddoc-_show-func-docid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies <a class="reference internal" href="../../ddocs/ddocs.html#showfun"><span class="std std-ref">show function</span></a> for the specified document.</p>
+<p>The request and response parameters are depended upon function
+implementation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>ddoc</strong> – Design document name</li>
+<li><strong>func</strong> – Show function name</li>
+<li><strong>docid</strong> – Document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Response signature</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>format</strong> (<em>string</em>) – Format of the returned response.
+Used by <a class="reference internal" href="../../query-server/javascript.html#provides" title="provides"><code class="xref js js-func docutils literal"><span class="pre">provides()</span></code></a> function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Query server error</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Function</strong>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="nx">body</span><span class="o">:</span> <span class="s2">&quot;no doc&quot;</span><span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="nx">body</span><span class="o">:</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">description</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/_design/recipe/_show/description/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">88</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/html; charset=utf-8</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 21 Aug 2013 12:38:08 GMT</span>
+<span class="na">Etag</span><span class="o">:</span> <span class="l">&quot;8IEBO8103EI98HDZL5Z4I1T0C&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+
+An Italian-American dish that usually consists of spaghetti, tomato sauce and meatballs.
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="db-design-design-doc-list-list-name-view-name">
+<span id="api-ddoc-list"></span><h1>1.5.7. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_list/list-name/view-name</span></code><a class="headerlink" href="#db-design-design-doc-list-list-name-view-name" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--db-_design-ddoc-_list-func-view">
+<code class="descname">GET </code><code class="descname">/{db}/_design/{ddoc}/_list/{func}/{view}</code><a class="headerlink" href="#get--db-_design-ddoc-_list-func-view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="post">
+<dt id="post--db-_design-ddoc-_list-func-view">
+<code class="descname">POST </code><code class="descname">/{db}/_design/{ddoc}/_list/{func}/{view}</code><a class="headerlink" href="#post--db-_design-ddoc-_list-func-view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies <a class="reference internal" href="../../ddocs/ddocs.html#listfun"><span class="std std-ref">list function</span></a> for the <a class="reference internal" href="../../ddocs/ddocs.html#viewfun"><span class="std std-ref">view function</span></a> from the same design document.</p>
+<p>The request and response parameters are depended upon function
+implementation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>ddoc</strong> – Design document name</li>
+<li><strong>func</strong> – List function name</li>
+<li><strong>view</strong> – View function name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Response signature</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41">Transfer-Encoding</a> – <code class="docutils literal"><span class="pre">chunked</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>format</strong> (<em>string</em>) – Format of the returned response.
+Used by <a class="reference internal" href="../../query-server/javascript.html#provides" title="provides"><code class="xref js js-func docutils literal"><span class="pre">provides()</span></code></a> function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Query server error</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Function</strong>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">head</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">row</span> <span class="o">=</span> <span class="nx">getRow</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">row</span><span class="p">){</span>
+        <span class="k">return</span> <span class="s1">&#39;no ingredients&#39;</span>
+    <span class="p">}</span>
+    <span class="nx">send</span><span class="p">(</span><span class="nx">row</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+    <span class="k">while</span><span class="p">(</span><span class="nx">row</span><span class="o">=</span><span class="nx">getRow</span><span class="p">()){</span>
+        <span class="nx">send</span><span class="p">(</span><span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nx">row</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/_design/recipe/_list/ingredients/by_name</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/plain</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/plain; charset=utf-8</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 21 Aug 2013 12:49:15 GMT</span>
+<span class="na">Etag</span><span class="o">:</span> <span class="l">&quot;D52L2M1TKQYDD1Y8MEYJR8C84&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+<span class="na">Transfer-Encoding</span><span class="o">:</span> <span class="l">chunked</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+
+meatballs, spaghetti, tomato sauce
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="db-design-design-doc-list-list-name-other-ddoc-view-name">
+<span id="api-ddoc-list-ddoc"></span><h1>1.5.8. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_list/list-name/other-ddoc/view-name</span></code><a class="headerlink" href="#db-design-design-doc-list-list-name-other-ddoc-view-name" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--db-_design-ddoc-_list-func-other-ddoc-view">
+<code class="descname">GET </code><code class="descname">/{db}/_design/{ddoc}/_list/{func}/{other-ddoc}/{view}</code><a class="headerlink" href="#get--db-_design-ddoc-_list-func-other-ddoc-view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="post">
+<dt id="post--db-_design-ddoc-_list-func-other-ddoc-view">
+<code class="descname">POST </code><code class="descname">/{db}/_design/{ddoc}/_list/{func}/{other-ddoc}/{view}</code><a class="headerlink" href="#post--db-_design-ddoc-_list-func-other-ddoc-view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies <a class="reference internal" href="../../ddocs/ddocs.html#listfun"><span class="std std-ref">list function</span></a> for the <a class="reference internal" href="../../ddocs/ddocs.html#viewfun"><span class="std std-ref">view function</span></a> from the other design document.</p>
+<p>The request and response parameters are depended upon function
+implementation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>ddoc</strong> – Design document name</li>
+<li><strong>func</strong> – List function name</li>
+<li><strong>other-ddoc</strong> – Other design document name that holds view function</li>
+<li><strong>view</strong> – View function name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a> – Response signature</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41">Transfer-Encoding</a> – <code class="docutils literal"><span class="pre">chunked</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>format</strong> (<em>string</em>) – Format of the returned response.
+Used by <a class="reference internal" href="../../query-server/javascript.html#provides" title="provides"><code class="xref js js-func docutils literal"><span class="pre">provides()</span></code></a> function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Request completed successfully</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Query server error</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Function</strong>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">head</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">row</span> <span class="o">=</span> <span class="nx">getRow</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">row</span><span class="p">){</span>
+        <span class="k">return</span> <span class="s1">&#39;no ingredients&#39;</span>
+    <span class="p">}</span>
+    <span class="nx">send</span><span class="p">(</span><span class="nx">row</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+    <span class="k">while</span><span class="p">(</span><span class="nx">row</span><span class="o">=</span><span class="nx">getRow</span><span class="p">()){</span>
+        <span class="nx">send</span><span class="p">(</span><span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nx">row</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/recipes/_design/ingredient/_list/ingredients/recipe/by_ingredient?key=&quot;spaghetti&quot;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/plain</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/plain; charset=utf-8</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 21 Aug 2013 12:49:15 GMT</span>
+<span class="na">Etag</span><span class="o">:</span> <span class="l">&quot;5L0975X493R0FB5Z3043POZHD&quot;</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+<span class="na">Transfer-Encoding</span><span class="o">:</span> <span class="l">chunked</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+
+spaghetti
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="db-design-design-doc-update-update-name">
+<span id="api-ddoc-update"></span><h1>1.5.9. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_update/update-name</span></code><a class="headerlink" href="#db-design-design-doc-update-update-name" title="Permalink to this headline">¶</a></h1>
+<dl class="post">
+<dt id="post--db-_design-ddoc-_update-func">
+<code class="descname">POST </code><code class="descname">/{db}/_design/{ddoc}/_update/{func}</code><a class="headerlink" href="#post--db-_design-ddoc-_update-func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes <a class="reference internal" href="../../ddocs/ddocs.html#updatefun"><span class="std std-ref">update function</span></a> on server side for <code class="docutils literal"><span class="pre">null</span></code>
+document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>ddoc</strong> – Design document name</li>
+<li><strong>func</strong> – Update function name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>X-Couch-Id</strong> – Created/updated document’s ID</li>
+<li><strong>X-Couch-Update-Newrev</strong> – Created/updated document’s revision</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – No document was created or updated</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a> – Document was created or updated</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Query server error</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Function</strong>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">doc</span><span class="p">){</span>
+      <span class="k">return</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;code&#39;</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span>
+                     <span class="s1">&#39;json&#39;</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;error&#39;</span><span class="o">:</span> <span class="s1">&#39;missed&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;reason&#39;</span><span class="o">:</span> <span class="s1">&#39;no document to update&#39;</span><span class="p">}}]</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">doc</span><span class="p">.</span><span class="nx">ingredients</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nx">doc</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;status&#39;</span><span class="o">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">}}];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/recipes/_design/recipe/_update/ingredients</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">10</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+
+<span class="s2">&quot;something&quot;</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">404</span> <span class="ne">Object Not Found</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">52</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 21 Aug 2013 14:00:58 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;missed&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;reason&quot;</span><span class="p">:</span> <span class="s2">&quot;no document to update&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="db-design-design-doc-update-update-name-doc-id">
+<span id="api-ddoc-update-id"></span><h1>1.5.10. <code class="docutils literal"><span class="pre">/db/_design/design-doc/_update/update-name/doc-id</span></code><a class="headerlink" href="#db-design-design-doc-update-update-name-doc-id" title="Permalink to this headline">¶</a></h1>
+<dl class="put">
+<dt id="put--db-_design-ddoc-_update-func-docid">
+<code class="descname">PUT </code><code class="descname">/{db}/_design/{ddoc}/_update/{func}/{docid}</code><a class="headerlink" href="#put--db-_design-ddoc-_update-func-docid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes <a class="reference internal" href="../../ddocs/ddocs.html#updatefun"><span class="std std-ref">update function</span></a> on server side for the specified
+document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>db</strong> – Database name</li>
+<li><strong>ddoc</strong> – Design document name</li>
+<li><strong>func</strong> – Update function name</li>
+<li><strong>docid</strong> – Document ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>X-Couch-Id</strong> – Created/updated document’s ID</li>
+<li><strong>X-Couch-Update-Newrev</strong> – Created/updated document’s revision</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – No document was created or updated</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a> – Document was created or updated</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Query server error</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Function</strong>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">doc</span><span class="p">){</span>
+        <span class="k">return</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;code&#39;</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span>
+                       <span class="s1">&#39;json&#39;</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;error&#39;</span><span class="o">:</span> <span class="s1">&#39;missed&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;reason&#39;</span><span class="o">:</span> <span class="s1">&#39;no document to update&#39;</span><span class="p">}}]</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">doc</span><span class="p">.</span><span class="nx">ingredients</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nx">doc</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;status&#39;</span><span class="o">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">}}];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/recipes/_design/recipe/_update/ingredients/SpaghettiWithMeatballs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">5</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:5984</span>
+
+<span class="s2">&quot;love&quot;</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">must-revalidate</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">16</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Date</span><span class="o">:</span> <span class="l">Wed, 21 Aug 2013 14:11:34 GMT</span>
+<span class="na">Server</span><span class="o">:</span> <span class="l">CouchDB (Erlang/OTP)</span>
+<span class="na">X-Couch-Id</span><span class="o">:</span> <span class="l">SpaghettiWithMeatballs</span>
+<span class="na">X-Couch-Update-NewRev</span><span class="o">:</span> <span class="l">12-a5e099df5720988dae90c8b664496baf</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rewrites.html" class="btn btn-neutral float-right" title="1.5.11. /db/_design/design-doc/_rewrite/path" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="views.html" class="btn btn-neutral" title="1.5.4. /db/_design/design-doc/_view/view-name" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Apache Software Foundation. CouchDB® is a registered trademark of the Apache Software Foundation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
